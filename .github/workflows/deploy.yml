@@ -47,4 +47,4 @@ jobs:
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo docker rm -f hackyeah_frontend 2>/dev/null || true"
 
         # Run the new container with SSH port exposed
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo docker run -d --name hackyeah_frontend --restart=always -p 81:4173 hackyeah_frontend:latest"
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo docker run -d --name hackyeah_frontend --restart=always -p 4173:81 hackyeah_frontend:latest"
