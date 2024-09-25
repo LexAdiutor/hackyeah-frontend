@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 81
 
-CMD ["npm", "run", "preview", "--", "--port", "81"]
+CMD ["npm", "run", "preview", "--", "--port", "81", "--host"]
