@@ -10,6 +10,7 @@ import Unexpected from "./errors/Unexpected";
 import Login, { action as loginAction } from "./routes/Login";
 import Register, { action as registerAction } from "./routes/Register";
 import Chat from "./routes/Chat";
+import Visualization from "./components/Visualization";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
 					<Route path="/login" element={<Login />} action={loginAction} />
 					<Route path="/register" element={<Register />} action={registerAction} />
 					<Route path="/chat" element={<Chat />} />
+					<Route path="/test" element={<Visualization />} />
 
 					<Route path="/*" element={<NotFound />} />
 				</Route>
