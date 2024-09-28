@@ -1,5 +1,5 @@
 // import React from "react";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import Index from "./routes/Index";
 import NotFound from "./errors/NotFound";
 // import Home from "./components/home/Home";
@@ -7,24 +7,29 @@ import NotFound from "./errors/NotFound";
 // import "./index.css"
 import RootLayout from "./layouts/RootLayout";
 import Unexpected from "./errors/Unexpected";
+import Login, { action as loginAction } from "./routes/Login";
+import Register, { action as registerAction } from "./routes/Register";
+import Chat from "./routes/Chat";
 
 function App() {
-	const a = {
-		c: "s",
-		v: 0,
-	};
+
+	const router = createBrowserRouter(
+		createRoutesFromElements(
+			<Route path="/" element={<RootLayout />}>
+				<Route errorElement={<Unexpected />}>
+					<Route index={true} element={<Index />} />
+					<Route path="/login" element={<Login />} action={loginAction} />
+					<Route path="/register" element={<Register />} action={registerAction} />
+					<Route path="/chat" element={<Chat />} />
+
+					<Route path="/*" element={<NotFound />} />
+				</Route>
+			</Route>
+		)
+	)
 
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<RootLayout />}>
-					<Route errorElement={<Unexpected />}>
-						<Route index={true} element={<Index />} />
-						<Route path="/*" element={<NotFound />} />
-					</Route>
-				</Route>
-			</Routes>
-		</BrowserRouter>
+		<RouterProvider router={router} />
 	);
 }
 
