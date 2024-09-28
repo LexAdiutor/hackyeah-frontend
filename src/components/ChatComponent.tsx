@@ -4,12 +4,13 @@ import { ChatBubbleData } from "../utlis/ChatBubbleData";
 
 type Props = {
     messages: Array<ChatBubbleData>,
-    setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>,
+    // setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>,
     refresfer: any,
     sendMessage: (message: string) => void,
+    disabled: boolean,
 }
 
-export default function ChatComponent({ messages, setMessages, refresfer, sendMessage } : Props) {
+export default function ChatComponent({ messages, refresfer, sendMessage, disabled } : Props) {
     const [chatBox, setChatBox] = useState<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -30,7 +31,7 @@ export default function ChatComponent({ messages, setMessages, refresfer, sendMe
                             return (
                                 <div className="chat chat-start" key={i}>
                                     <div className="chat-bubble">
-                                        <pre className="text-wrap break-all">{message.message}</pre>
+                                        <pre className="text-wrap break-words">{message.message}</pre>
                                     </div>
                                 </div>
                             )
@@ -38,7 +39,7 @@ export default function ChatComponent({ messages, setMessages, refresfer, sendMe
                         return (
                             <div className="chat chat-end" key={i}>
                                 <div className="chat-bubble">
-                                    <pre className="text-wrap break-all">{message.message}</pre>
+                                    <pre className="text-wrap break-words">{message.message}</pre>
                                 </div>
                             </div>
                         )
@@ -48,9 +49,9 @@ export default function ChatComponent({ messages, setMessages, refresfer, sendMe
             </div>
 
             <textarea
+                disabled={disabled}
                 name="userChatInput"
                 className="textarea textarea-bordered resize-none w-full mt-4 overflow-y-hidden"
-                // rows={chatRows}
                 rows={1}
                 onKeyUp={async (event) => {
                     event.preventDefault()

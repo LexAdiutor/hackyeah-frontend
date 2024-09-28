@@ -6,11 +6,20 @@ import Preview from "../components/Preview";
 import Cookies from "js-cookie";
 import { ActionFunctionArgs } from "react-router-dom";
 import { MsgSender } from "../utlis/MsgSender";
+import SideMenu from "../components/SideMenu";
+
+const COOKIE_NAME = "chatHash";
 
 enum ChatType {
     taxes = "taxes",
     form = "form",
     visualization = "visualization",
+}
+
+enum FormChatState {
+    unset = "unset",
+    ok = "ok",
+    notok = "notok",
 }
 
 const delay = async (time: number) => {
@@ -21,11 +30,12 @@ export default function Chat() {
     const [chatType, setChatType] = useState<ChatType>(ChatType.taxes);
     const [taxMessages, setTaxMessages] = useState<Array<ChatBubbleData>>([]);
     const [formMessages, setFormMessages] = useState<Array<ChatBubbleData>>([]);
+    const [formChatState, setFormChatState] = useState<FormChatState>(FormChatState.unset);
+
+    const [cookieHash, setCookieHash] = useState<string | null>(null);
 
     const sendMessage = async (message: string, setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>, type: "GLOBAL" | "FORM") => {
         setMessages((prev) => [...prev, { message, sender: MsgSender.user }]);
-
-        const cookieName = `${type === "GLOBAL" ? "tax" : "form"}ChatCookie`;
 
         const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/sendMessage`, {
             method: "POST",
@@ -35,30 +45,32 @@ export default function Chat() {
             }),
             headers: {
                 "Content-Type": "Application/json",
-                "Authorization": Cookies.get(cookieName) ?? "",
+                "Authorization": Cookies.get(COOKIE_NAME) ?? "",
             },
         })
 
         const { hash } = await req.json();
 
-        Cookies.set(cookieName, hash, {
-            expires: 3600,
+        Cookies.set(COOKIE_NAME, hash, {
+            expires: 1,
             path: "/",
             sameSite: "strict",
             secure: true,
         })
 
-        await listenForMsgs(cookieName, setMessages);
+        setCookieHash(() => hash);
+
+        await listenForMsgs();
     }
 
-    const listenForMsgs = async (cookieName: string, setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>) => {
+    const listenForMsgs = async () => {
         let response = true;
 
         while (response) {
-            const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getMessage`, {
+            const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getState`, {
                 method: "GET",
                 headers: {
-                    "Authorization": Cookies.get(cookieName) ?? "",
+                    "Authorization": Cookies.get(COOKIE_NAME) ?? "",
                 },
             })
 
@@ -71,48 +83,70 @@ export default function Chat() {
         const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getChat`, {
             method: "GET",
             headers: {
-                "Authorization": Cookies.get(cookieName) ?? "",
+                "Authorization": Cookies.get(COOKIE_NAME) ?? "",
             },
         })
 
-        const { messages } = await req.json();
-        const newMessages: Array<ChatBubbleData> = messages.map((msg: ChatBubbleData) => {
-            return { sender: msg.sender, message: msg.message };
-        })
+        const { form, formMessages, globalMessages } = await req.json();
+        
+        setTaxMessages(() => globalMessages)
+        setFormMessages(() => formMessages);
 
-        setMessages(() => newMessages)
+        // if (newMessages[newMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") setFormChatState(() => FormChatState.notok);
+    }
+
+    const initialLoad = async () => {
+        const chatHash = Cookies.get(COOKIE_NAME);
+
+        if (!chatHash) {
+            const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/createHash`, {
+                method: "GET",
+            });
+
+            const { hash } = await req.json();
+            Cookies.set(COOKIE_NAME, hash, {
+                expires: 1,
+                path: "/",
+                sameSite: "strict",
+                secure: true,
+            });
+        }
+
+        await listenForMsgs();
     }
 
     useEffect(() => {
-        if (Cookies.get("taxChatCookie")) listenForMsgs("taxChatCookie", setTaxMessages);
-        if (Cookies.get("formChatCookie")) listenForMsgs("formChatCookie", setFormMessages);
+        initialLoad();
     }, [])
 
     return (
-        <div className="space-y-4 my-2 flex flex-col h-full">
-            <div className="join mx-auto">
-                <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} />
-                <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.form} onChange={() => setChatType(ChatType.form)} aria-label="Wypelnijmy wspolnie formularz" checked={chatType === ChatType.form} />
-                <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.visualization} onChange={() => setChatType(ChatType.visualization)} aria-label="Wizualizacja pliku" checked={chatType === ChatType.visualization} />
+        <>
+            <SideMenu cookieHash={cookieHash} setCookieHash={setCookieHash} />
+            <div className="space-y-4 my-2 flex flex-col h-full">
+                <div className="join mx-auto">
+                    <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} />
+                    <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.form} onChange={() => setChatType(ChatType.form)} aria-label="Wypelnijmy wspolnie formularz" checked={chatType === ChatType.form} />
+                    <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.visualization} onChange={() => setChatType(ChatType.visualization)} aria-label="Wizualizacja pliku" checked={chatType === ChatType.visualization} />
+                </div>
+
+                <div
+                    className={chatType !== ChatType.visualization ? "h-[calc(100dvh-12rem)] max-h-dvh" : ""}
+                >
+                    {
+                        chatType === ChatType.taxes ?
+                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} /> 
+                        : chatType === ChatType.form ?
+                            <div className="flex gap-4 h-full [&>*]:flex-1">
+                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.notok} />
+                                {formChatState === FormChatState.ok ? <Preview /> : ""}
+                            </div>
+                        : <Visualization />
+
+                    }
+                </div>
             </div>
-
-            <div
-                className={chatType !== ChatType.visualization ? "h-[calc(100dvh-12rem)] max-h-dvh" : ""}
-            >
-                {
-                    chatType === ChatType.taxes ?
-                        <ChatComponent messages={taxMessages} setMessages={setTaxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} /> 
-                    : chatType === ChatType.form ?
-                        <div className="flex gap-4 h-full [&>*]:flex-1">
-                            <ChatComponent messages={formMessages} setMessages={setFormMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} />
-                            <Preview />
-                        </div>
-                    : <Visualization />
-
-                }
-            </div>
-
-            
-        </div>
+        </>
     )
 }
+
+// Przepraszmy, ale nie wspierazmy wypelniania wniosku dla tego podatku.
