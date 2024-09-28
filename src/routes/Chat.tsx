@@ -20,6 +20,10 @@ enum ChatType {
 // export async function action({ request }: ActionFunctionArgs) {
 
 // }
+const delay = async (time: number) => {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
 
 
 
@@ -48,13 +52,10 @@ export default function Chat() {
         Cookies.set("taxChatCookie", hash, {
             expires: 3600,
             path: "/",
+            sameSite: "strict",
         })
 
         await listenForTaxMsgs();
-    }
-
-    const delay = async (time: number) => {
-        return new Promise(resolve => setTimeout(resolve, time));
     }
 
     const listenForTaxMsgs = async () => {
@@ -93,6 +94,70 @@ export default function Chat() {
         console.log(messages);
     }
 
+    const sendFormMessage = async (message: string) => {
+        setFormMessages((prev) => [...prev, { message, sender: MsgSender.user }]);
+
+        const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/sendMessage`, {
+            method: "POST",
+            body: JSON.stringify({
+                message,
+                type: "FORM",
+            }),
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": Cookies.get("formChatCookie") ?? "",
+            },
+        })
+
+        const { hash } = await req.json();
+
+        Cookies.set("formChatCookie", hash, {
+            expires: 3600,
+            path: "/",
+            sameSite: "strict",
+        })
+
+        await listenForFormMsgs();
+    }
+
+    const listenForFormMsgs = async () => {
+        let response = true;
+
+        let i = 0;
+
+        while (response) {
+            const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getMessage`, {
+                method: "GET",
+                headers: {
+                    "Authorization": Cookies.get("formChatCookie") ?? "",
+                },
+            })
+
+            const { working } = await req.json();
+            response = working;
+
+            await delay(1000);
+        }
+
+        const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getChat`, {
+            method: "GET",
+            headers: {
+                "Authorization": Cookies.get("formChatCookie") ?? "",
+            },
+        })
+
+        const { messages } = await req.json();
+        const newMessages: Array<ChatBubbleData> = messages.map((msg: ChatBubbleData) => {
+            return { sender: msg.sender, message: msg.message };
+        })
+
+        setFormMessages(() => newMessages)
+
+        console.log(messages);
+    }
+
+
+
     return (
         <div className="space-y-4 my-2 flex flex-col h-full">
             <div className="join mx-auto">
@@ -109,7 +174,7 @@ export default function Chat() {
                         <ChatComponent messages={taxMessages} setMessages={setTaxMessages} refresfer={chatType} sendMessage={sendTaxMessage} /> 
                     : chatType === ChatType.form ?
                         <div className="flex gap-4 h-full [&>*]:flex-1">
-                            <ChatComponent messages={formMessages} setMessages={setFormMessages} refresfer={chatType} sendMessage={(a) => null} />
+                            <ChatComponent messages={formMessages} setMessages={setFormMessages} refresfer={chatType} sendMessage={sendFormMessage} />
                             <Preview />
                         </div>
                     : <Visualization />
