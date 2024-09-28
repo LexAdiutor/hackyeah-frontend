@@ -7,6 +7,8 @@ import Cookies from "js-cookie";
 import { ActionFunctionArgs } from "react-router-dom";
 import { MsgSender } from "../utlis/MsgSender";
 import SideMenu from "../components/SideMenu";
+import Form from "../components/Form";
+import { InputType } from "../components/Input";
 
 const COOKIE_NAME = "chatHash";
 
@@ -17,9 +19,10 @@ enum ChatType {
 }
 
 enum FormChatState {
-    unset = "unset",
-    ok = "ok",
-    notok = "notok",
+    unset = 'unset',
+    form = "form",
+    preview = "preview",
+    wrong = "wrong",
 }
 
 const delay = async (time: number) => {
@@ -30,6 +33,7 @@ export default function Chat() {
     const [chatType, setChatType] = useState<ChatType>(ChatType.taxes);
     const [taxMessages, setTaxMessages] = useState<Array<ChatBubbleData>>([]);
     const [formMessages, setFormMessages] = useState<Array<ChatBubbleData>>([]);
+    const [formData, setFormData] = useState<Array<InputType>>([]);
     const [formChatState, setFormChatState] = useState<FormChatState>(FormChatState.unset);
 
     const [cookieHash, setCookieHash] = useState<string | null>(null);
@@ -87,10 +91,21 @@ export default function Chat() {
             },
         })
 
-        const { form, formMessages, globalMessages } = await req.json();
+        const { form, formMessages: fMessaeges, globalMessages } = await req.json();
+
+
         
-        setTaxMessages(() => globalMessages)
-        setFormMessages(() => formMessages);
+        setTaxMessages(() => globalMessages);
+        setFormMessages(() => fMessaeges);
+        if (form) setFormData(() => form);
+
+
+
+
+
+            // console.log(form)
+
+
 
         // if (newMessages[newMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") setFormChatState(() => FormChatState.notok);
     }
@@ -116,6 +131,19 @@ export default function Chat() {
     }
 
     useEffect(() => {
+        if (!formMessages[formMessages.length - 1]) return;
+        if (formMessages[formMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") {
+            setFormChatState(() => FormChatState.wrong);
+            return;
+        }
+ if (formData.length !== 0) setFormChatState(() => FormChatState.form);
+    }, [formMessages, formData])
+
+    // useEffect(() => {
+    //     if (formData.length !== 0) setFormChatState(() => FormChatState.form);
+    // }, [formData])
+
+    useEffect(() => {
         initialLoad();
     }, [])
 
@@ -137,8 +165,9 @@ export default function Chat() {
                             <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} /> 
                         : chatType === ChatType.form ?
                             <div className="flex gap-4 h-full [&>*]:flex-1">
-                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.notok} />
-                                {formChatState === FormChatState.ok ? <Preview /> : ""}
+                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.wrong} />
+                                {formChatState === FormChatState.preview ? <Preview /> : ""}
+                                {formChatState === FormChatState.form ? <Form data={formData} /> : ""}
                             </div>
                         : <Visualization />
 
