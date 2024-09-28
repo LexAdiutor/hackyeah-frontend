@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ChatComponent from "../components/ChatComponent";
 import { ChatBubbleData } from "../utlis/ChatBubbleData";
 import Visualization from "../components/Visualization";
@@ -45,6 +45,7 @@ export default function Chat() {
             expires: 3600,
             path: "/",
             sameSite: "strict",
+            secure: true,
         })
 
         await listenForMsgs(cookieName, setMessages);
@@ -81,6 +82,11 @@ export default function Chat() {
 
         setMessages(() => newMessages)
     }
+
+    useEffect(() => {
+        if (Cookies.get("taxChatCookie")) listenForMsgs("taxChatCookie", setTaxMessages);
+        if (Cookies.get("formChatCookie")) listenForMsgs("formChatCookie", setFormMessages);
+    }, [])
 
     return (
         <div className="space-y-4 my-2 flex flex-col h-full">
