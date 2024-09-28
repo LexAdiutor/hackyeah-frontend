@@ -1,18 +1,8 @@
 import React from 'react'
 import Input, { InputType } from './Input';
 
-const Form = ({dataUrl, onFormChange}: {dataUrl: string, onFormChange?: (form: any) => void}) => {
-  const [form, setForm] = React.useState<Object>({});
-  const [data, setData] = React.useState<InputType[]>([]);
-
-  React.useEffect(() => {
-    fetch(dataUrl)
-      .then(response => response.json())
-      .then((data: InputType[]) => {
-        setForm(Object.fromEntries(Object.values(data).map((q) => [q.name, q.default ? q.default : ''])));
-        setData(data);
-      });
-  }, []);
+const Form = ({data, onFormChange}: {data: InputType[], onFormChange?: (form: any) => void}) => {
+  const [form, setForm] = React.useState<Object>(Object.fromEntries(Object.values(data).map((q) => [q.name, q.default ? q.default : ''])));
 
   React.useEffect(() => {
     if (onFormChange)
