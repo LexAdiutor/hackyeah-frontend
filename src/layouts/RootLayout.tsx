@@ -23,16 +23,16 @@ export default function RootLayout() {
 
 
 	return (
-		<div className="max-h-[100dvh] flex flex-col [&>*]:container">
+		<div className="max-h-[100dvh] flex flex-col [&>*]:container relative">
 			<header className="flex justify-between py-2">
 				<h1 className="text-3xl font-semibold">
 					<Link to={"/"}>logo</Link>
 				</h1>
-				<nav>
-					<button className="btn btn-primary" onClick={handleClick}>home</button>
-					<Link to={"/login"} className="btn btn-link">login</Link>
-					<Link to={"/register"} className="btn btn-link">register</Link>
-					<Link to={"/chat"} className="btn btn-link">chat</Link>
+				<nav className="space-x-2">
+					<button className="btn btn-primary hover:btn-secondary" onClick={handleClick}>home</button>
+					<Link to={"/login"} className="btn btn-secondary hover:btn-primary">login</Link>
+					<Link to={"/register"} className="btn btn-secondary hover:btn-primary">register</Link>
+					<Link to={"/chat"} className="btn btn-secondary hover:btn-primary">chat</Link>
 				</nav>
 			</header>
 			<main className="flex-1">
