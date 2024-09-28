@@ -51,11 +51,6 @@ export default function Chat() {
         })
 
         await listenForTaxMsgs();
-        // console.log(resMessage)
-
-        // setTaxMessages((prev) => [...prev, { message: resMessage, sender: MsgSender.chat }]);
-
-        // console.log(response);
     }
 
     const delay = async (time: number) => {
