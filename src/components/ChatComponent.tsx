@@ -6,9 +6,10 @@ type Props = {
     messages: Array<ChatBubbleData>,
     setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>,
     refresfer: any,
+    sendMessage: (message: string) => void,
 }
 
-export default function ChatComponent({ messages, setMessages, refresfer } : Props) {
+export default function ChatComponent({ messages, setMessages, refresfer, sendMessage } : Props) {
     const [chatBox, setChatBox] = useState<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -51,28 +52,30 @@ export default function ChatComponent({ messages, setMessages, refresfer } : Pro
                 className="textarea textarea-bordered resize-none w-full mt-4 overflow-y-hidden"
                 // rows={chatRows}
                 rows={1}
-                onKeyUp={(event) => {
+                onKeyUp={async (event) => {
                     event.preventDefault()
                     if (event.code === "Enter" && event.shiftKey === false) {                        
                         const message = event.currentTarget.value;
                         event.currentTarget.value = "";
 
-                        console.log(message)
+                        // console.log(message)
 
-                        setMessages((prev) => [...prev, { sender: MsgSender.user, message }]);
+                        await sendMessage(message);
 
-                        setTimeout(() => {
-                            setMessages((prev) => [...prev, { sender: MsgSender.chat, message: Math.random().toString() }])
-                        }, 1000)
+                        // setMessages((prev) => [...prev, { sender: MsgSender.user, message }]);
+
+                        // setTimeout(() => {
+                        //     setMessages((prev) => [...prev, { sender: MsgSender.chat, message: Math.random().toString() }])
+                        // }, 1000)
                         
 
-                        setTimeout(() => {
-                            if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
-                        }, 50)
+                        // setTimeout(() => {
+                        //     if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+                        // }, 50)
                     }
 
-                    event.currentTarget.style.height = "1px"
-                    event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`
+                    // event.currentTarget.style.height = "1px"
+                    // event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`
                 }}
             />
             

@@ -3,6 +3,9 @@ import ChatComponent from "../components/ChatComponent";
 import { ChatBubbleData } from "../utlis/ChatBubbleData";
 import Visualization from "../components/Visualization";
 import Preview from "../components/Preview";
+import Cookies from "js-cookie";
+import { ActionFunctionArgs } from "react-router-dom";
+import { MsgSender } from "../utlis/MsgSender";
 
 enum ChatType {
     taxes = "taxes",
@@ -10,9 +13,13 @@ enum ChatType {
     visualization = "visualization",
 }
 
-export async function loader() {
+// export async function loader() {
 
-}
+// }
+
+// export async function action({ request }: ActionFunctionArgs) {
+
+// }
 
 
 
@@ -20,6 +27,76 @@ export default function Chat() {
     const [chatType, setChatType] = useState<ChatType>(ChatType.taxes);
     const [taxMessages, setTaxMessages] = useState<Array<ChatBubbleData>>([]);
     const [formMessages, setFormMessages] = useState<Array<ChatBubbleData>>([]);
+
+    const sendTaxMessage = async (message: string) => {
+        setTaxMessages((prev) => [...prev, { message, sender: MsgSender.user }]);
+
+        const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/sendMessage`, {
+            method: "POST",
+            body: JSON.stringify({
+                message,
+                type: "GLOBAL",
+            }),
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": Cookies.get("taxChatCookie") ?? "",
+            },
+        })
+
+        const { hash } = await req.json();
+
+        Cookies.set("taxChatCookie", hash, {
+            expires: 3600,
+            path: "/",
+        })
+
+        await listenForTaxMsgs();
+        // console.log(resMessage)
+
+        // setTaxMessages((prev) => [...prev, { message: resMessage, sender: MsgSender.chat }]);
+
+        // console.log(response);
+    }
+
+    const delay = async (time: number) => {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    const listenForTaxMsgs = async () => {
+        let response = true;
+
+        let i = 0;
+
+        while (response) {
+            const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getMessage`, {
+                method: "GET",
+                headers: {
+                    "Authorization": Cookies.get("taxChatCookie") ?? "",
+                },
+            })
+
+            const { working } = await req.json();
+            response = working;
+
+            await delay(1000);
+        }
+
+        const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getChat`, {
+            method: "GET",
+            headers: {
+                "Authorization": Cookies.get("taxChatCookie") ?? "",
+            },
+        })
+
+        const { messages } = await req.json();
+        const newMessages: Array<ChatBubbleData> = messages.map((msg: ChatBubbleData) => {
+            return { sender: msg.sender, message: msg.message };
+        })
+
+        setTaxMessages(() => newMessages)
+
+        console.log(messages);
+    }
 
     return (
         <div className="space-y-4 my-2 flex flex-col h-full">
@@ -34,10 +111,10 @@ export default function Chat() {
             >
                 {
                     chatType === ChatType.taxes ?
-                        <ChatComponent messages={taxMessages} setMessages={setTaxMessages} refresfer={chatType} /> 
+                        <ChatComponent messages={taxMessages} setMessages={setTaxMessages} refresfer={chatType} sendMessage={sendTaxMessage} /> 
                     : chatType === ChatType.form ?
                         <div className="flex gap-4 h-full [&>*]:flex-1">
-                            <ChatComponent messages={formMessages} setMessages={setFormMessages} refresfer={chatType} />
+                            <ChatComponent messages={formMessages} setMessages={setFormMessages} refresfer={chatType} sendMessage={(a) => null} />
                             <Preview />
                         </div>
                     : <Visualization />
