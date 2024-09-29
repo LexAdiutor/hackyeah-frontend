@@ -6,6 +6,13 @@ export default {
 		container: {
 			center: true,
 			padding: "1rem",
+			screens: {
+				sm: '600px',
+				md: '728px',
+				lg: '1025px', // nie rozjezdza sie na regulaminowej szerokosci dzieki temu
+				xl: '1280px',
+				'2xl': '1536px',
+			}
 		},
 	},
 	plugins: [require("daisyui")],

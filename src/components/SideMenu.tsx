@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+
+const COOKIE_NAME = "chatHash";
 
 type Props = {
-    cookieHash: string | null;
-    setCookieHash: React.Dispatch<React.SetStateAction<string | null>>;
+    // cookieHash: string | null;
+    // setCookieHash: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export default function SideMenu({ cookieHash, setCookieHash }: Props) {
+export default function SideMenu({}: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const [copyDialog, setCopyDialog] = useState<HTMLDialogElement | null>(null);
     const [pasteDialog, setPasteDialog] = useState<HTMLDialogElement | null>(null);
@@ -31,6 +34,16 @@ export default function SideMenu({ cookieHash, setCookieHash }: Props) {
 
                 <button className="btn" onClick={() => copyDialog!.showModal() }>Pokaz hash sesji</button>
                 <button className="btn" onClick={() => pasteDialog!.showModal() }>Nadpisz hash sesji</button>
+                <button
+                    className="btn"
+                    onClick={() => {
+                        Cookies.remove(COOKIE_NAME);
+
+                        location.reload();
+                    }}
+                >
+                    Resetuj sesje
+                </button>
             </div>
 
             <dialog id="copyDialog" className="modal">
@@ -42,12 +55,12 @@ export default function SideMenu({ cookieHash, setCookieHash }: Props) {
                     </form>
                     <h3 className="text-lg font-bold mb-2">Skopiuj hash sesji</h3>
                     {
-                        cookieHash ?
+                        (Cookies.get(COOKIE_NAME) !== "" && Cookies.get(COOKIE_NAME))  ?
                             <label className="input input-bordered flex items-center gap-2">
-                                <p className="grow overflow-x-auto">{cookieHash}</p>
+                                <p className="grow overflow-x-auto">{Cookies.get(COOKIE_NAME) ?? ""}</p>
                                 <button
                                     onClick={async () => {
-                                        await navigator.clipboard.writeText(cookieHash);
+                                        await navigator.clipboard.writeText(Cookies.get(COOKIE_NAME) ?? "");
                                     }}
                                 >
                                     <span className="icon">content_copy</span>
@@ -88,8 +101,13 @@ export default function SideMenu({ cookieHash, setCookieHash }: Props) {
                         <button
                             className="btn"
                             onClick={() => {
-                                console.log('asd')
-                                setCookieHash(() => hashInput?.value ?? "");
+                                if (!hashInput || !hashInput.value || hashInput.value === "") return;
+                                Cookies.set(COOKIE_NAME, hashInput.value, {
+                                    expires: 1,
+                                    path: "/",
+                                    sameSite: "strict",
+                                    secure: true,
+                                })
                                 pasteDialog?.close();
                             }}
                         >

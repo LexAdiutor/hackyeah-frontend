@@ -13,7 +13,7 @@ const Form = ({data, setFormOk, onFormChange}: {data: InputType[], setFormOk: ()
 	}, [form]);
 	
 	return (
-		<div>
+		<div className="overflow-y-auto">
 		{data.map((question: InputType, index) => (
 			<Input key={index} question={question} form={form} onChange={(newValue) => {
 			setForm({ ...form, [question.name]: newValue });
