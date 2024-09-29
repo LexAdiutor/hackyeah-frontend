@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const COOKIE_NAME = "chatHash";
 
-const Form = ({data, onFormChange}: {data: InputType[], onFormChange?: (form: any) => void}) => {
+const Form = ({data, setFormOk, onFormChange}: {data: InputType[], setFormOk: () => void , onFormChange?: (form: any) => void}) => {
 	const [form, setForm] = React.useState<Object>(Object.fromEntries(Object.values(data).map((q) => [q.name, q.default ? q.default : ''])));
 
 	React.useEffect(() => {
@@ -36,8 +36,8 @@ const Form = ({data, onFormChange}: {data: InputType[], onFormChange?: (form: an
 					}
 				})
 
-				const res = await req.json();
-				console.log(res);
+				const { success } = await req.json();
+				if (success) setFormOk();
 			}}
 		>
 			Wyslij

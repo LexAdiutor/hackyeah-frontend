@@ -38,6 +38,10 @@ export default function Chat() {
 
     const [cookieHash, setCookieHash] = useState<string | null>(null);
 
+    const setFormOk = () => {
+        setFormChatState(() => FormChatState.preview);
+    }
+
     const sendMessage = async (message: string, setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>, type: "GLOBAL" | "FORM") => {
         setMessages((prev) => [...prev, { message, sender: MsgSender.user }]);
 
@@ -97,7 +101,7 @@ export default function Chat() {
         
         setTaxMessages(() => globalMessages);
         setFormMessages(() => fMessaeges);
-        if (form) setFormData(() => form);
+        setFormData(() => form ?? []);
 
 
 
@@ -136,7 +140,8 @@ export default function Chat() {
             setFormChatState(() => FormChatState.wrong);
             return;
         }
- if (formData.length !== 0) setFormChatState(() => FormChatState.form);
+        if (formData.length !== 0) setFormChatState(() => FormChatState.form);
+
     }, [formMessages, formData])
 
     // useEffect(() => {
@@ -167,7 +172,7 @@ export default function Chat() {
                             <div className="flex gap-4 h-full [&>*]:flex-1">
                                 <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.wrong} />
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
-                                {formChatState === FormChatState.form ? <Form data={formData} /> : ""}
+                                {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>
                         : <Visualization />
 
