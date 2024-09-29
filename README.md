@@ -1,6 +1,6 @@
 # RUN:
 ```
-npm build
+npm run build
 npm run dev
 ```
 
