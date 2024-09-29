@@ -37,7 +37,7 @@ import css from "css";
 
 
 
-export default function Visualization({ visualizationPoints }: { visualizationPoints: VisualozationPoints }) {
+export default function Visualization({ visualizationPoints }: { visualizationPoints: VisualozationPoints  }) {
   // const [visualizationElement, setVisualizationElement] = useState<HTMLDivElement | null>(null);
 
   
@@ -46,187 +46,78 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
     // const visualizationElementS = document.querySelector("#visualization") as HTMLDivElement;
     // setVisualizationElement(() => visualizationElementS)
 
-      function generateXML() {
-          return `
-            <Deklaracja>
-              <Naglowek>
-                <KodFormularza kodSystemowy="PCC-3 (6)" kodPodatku="PCC" rodzajZobowiazania="Z" wersjaSchemy="1-0E">PCC-3</KodFormularza>
-                <WariantFormularza>6</WariantFormularza>
-                <CelZlozenia poz="P_6">${visualizationPoints.P_6}</CelZlozenia>
-                <Data poz="P_4">${visualizationPoints.P_4}</Data>
-                <KodUrzedu>0271</KodUrzedu>
-              </Naglowek>
-
-              <Podmiot1 rola="Podatnik">
-                <OsobaFizyczna>
-                  ${visualizationPoints.P_1.length === 11 ? "<PESEL>" + visualizationPoints.P_1 + "</PESEL>" : "<NIP>" + visualizationPoints.P_1 + "</NIP>"}
-                  <ImiePierwsze>${visualizationPoints.P_9.split(" ")[1]}</ImiePierwsze>
-                  <Nazwisko>${visualizationPoints.P_9.split(" ")[0]}</Nazwisko>
-                  <DataUrodzenia>${visualizationPoints.P_9.split(" ")[2]}</DataUrodzenia>
-                </OsobaFizyczna>
-                <AdresZamieszkaniaSiedziby rodzajAdresu="RAD">
-                  <AdresPol>
-                    <KodKraju>PL</KodKraju>
-                    <Wojewodztwo>${visualizationPoints.P_12}</Wojewodztwo>
-                    <Powiat>${visualizationPoints.P_13}</Powiat>
-                    <Gmina>${visualizationPoints.P_14}</Gmina>
-                    <Ulica>${visualizationPoints.P_15}</Ulica>
-                    <NrDomu>${visualizationPoints.P_16}</NrDomu>
-                    <NrLokalu>${visualizationPoints.P_17}</NrLokalu>
-                    <Miejscowosc>${visualizationPoints.P_18}</Miejscowosc>
-                    <KodPocztowy>${visualizationPoints.P_19}</KodPocztowy>
-                  </AdresPol>
-                </AdresZamieszkaniaSiedziby>
-              </Podmiot1>
-
-              <PozycjeSzczegolowe>
-                <P_7>${visualizationPoints.P_7}</P_7>
-                <P_20>${visualizationPoints.P_20}</P_20>
-                <P_21>${visualizationPoints.P_21}</P_21>
-                <P_22>${visualizationPoints.P_22}</P_22>
-                <P_23>${visualizationPoints.P_23}</P_23>
-                ${
-                  visualizationPoints.P_24 ? 
-                  `
-                  <P_24>${visualizationPoints.P_24}</P_24>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_25 ? 
-                  `
-                  <P_25>${visualizationPoints.P_25}</P_25>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_26 ? 
-                  `
-                  <P_26>${visualizationPoints.P_26}</P_26>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_27 ? 
-                  `
-                  <P_27>${visualizationPoints.P_27}</P_27>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_28 ? 
-                  `
-                  <P_28>${visualizationPoints.P_28}</P_28>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_29 ? 
-                  `
-                  <P_29>${visualizationPoints.P_29}</P_29>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_30 ? 
-                  `
-                  <P_30>${visualizationPoints.P_30}</P_30>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_31 ? 
-                  `
-                  <P_31>${visualizationPoints.P_31}</P_31>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_32 ? 
-                  `
-                  <P_32>${visualizationPoints.P_32}</P_32>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_33 ? 
-                  `
-                  <P_33>${visualizationPoints.P_33}</P_33>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_34 ? 
-                  `
-                  <P_34>${visualizationPoints.P_34}</P_34>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_35 ? 
-                  `
-                  <P_35>${visualizationPoints.P_35}</P_35>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_36 ? 
-                  `
-                  <P_36>${visualizationPoints.P_36}</P_36>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_37 ? 
-                  `
-                  <P_37>${visualizationPoints.P_37}</P_37>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_38 ? 
-                  `
-                  <P_38>${visualizationPoints.P_38}</P_38>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_39 ? 
-                  `
-                  <P_39>${visualizationPoints.P_39}</P_39>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_40 ? 
-                  `
-                  <P_40>${visualizationPoints.P_40}</P_40>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_41 ? 
-                  `
-                  <P_41>${visualizationPoints.P_41}</P_41>
-                  ` 
-                : ""}
-                
-                ${
-                  visualizationPoints.P_42 ? 
-                  `
-                  <P_42>${visualizationPoints.P_42}</P_42>
-                  ` 
-                : ""}
-                
-                <P_46>${visualizationPoints.P_46}</P_46>
-                <P_53>${visualizationPoints.P_46}</P_53>
-                <P_62>${visualizationPoints.P_62}</P_62>
-              </PozycjeSzczegolowe>
-              <Pouczenia>1</Pouczenia>
-
-            </Deklaracja>
-          `
-      }
+    function generateXML() {
+      const nameParts = visualizationPoints.P_9 ? visualizationPoints.P_9.split(" ") : ['', '', ''];
+      const [lastName, firstName, dateOfBirth] = nameParts;
+    
+      return `<?xml version="1.0" encoding="UTF-8"?>
+      <Deklaracja xmlns="http://crd.gov.pl/wzor/2023/12/13/13064/">
+        <Naglowek>
+          <KodFormularza kodSystemowy="PCC-3 (6)" kodPodatku="PCC" rodzajZobowiazania="Z" wersjaSchemy="1-0E">PCC-3</KodFormularza>
+          <WariantFormularza>6</WariantFormularza>
+          <CelZlozenia poz="P_6">1</CelZlozenia>
+          <Data poz="P_4">28-09-2024</Data>
+          <KodUrzedu>0271</KodUrzedu>
+        </Naglowek>
+    
+        <Podmiot1 rola="Podatnik">
+          <OsobaFizyczna>
+            ${visualizationPoints.P_1 && visualizationPoints.P_1.length === 11
+              ? `<PESEL>${visualizationPoints.P_1}</PESEL>`
+              : visualizationPoints.P_1 && visualizationPoints.P_1.length > 0
+              ? `<NIP>${visualizationPoints.P_1}</NIP>`
+              : ''}
+            ${firstName ? `<ImiePierwsze>${firstName}</ImiePierwsze>` : ''}
+            ${lastName ? `<Nazwisko>${lastName}</Nazwisko>` : ''}
+            ${dateOfBirth ? `<DataUrodzenia>${dateOfBirth}</DataUrodzenia>` : ''}
+          </OsobaFizyczna>
+          <AdresZamieszkaniaSiedziby rodzajAdresu="RAD">
+            <AdresPol>
+              <KodKraju>PL</KodKraju>
+              ${visualizationPoints.P_12 ? `<Wojewodztwo>${visualizationPoints.P_12}</Wojewodztwo>` : ''}
+              ${visualizationPoints.P_13 ? `<Powiat>${visualizationPoints.P_13}</Powiat>` : ''}
+              ${visualizationPoints.P_14 ? `<Gmina>${visualizationPoints.P_14}</Gmina>` : ''}
+              ${visualizationPoints.P_15 ? `<Ulica>${visualizationPoints.P_15}</Ulica>` : ''}
+              ${visualizationPoints.P_16 ? `<NrDomu>${visualizationPoints.P_16}</NrDomu>` : ''}
+              ${visualizationPoints.P_17 ? `<NrLokalu>${visualizationPoints.P_17}</NrLokalu>` : ''}
+              ${visualizationPoints.P_18 ? `<Miejscowosc>${visualizationPoints.P_18}</Miejscowosc>` : ''}
+              ${visualizationPoints.P_19 ? `<KodPocztowy>${visualizationPoints.P_19}</KodPocztowy>` : ''}
+            </AdresPol>
+          </AdresZamieszkaniaSiedziby>
+        </Podmiot1>
+    
+        <PozycjeSzczegolowe>
+          ${visualizationPoints.P_7 ? `<P_7>${visualizationPoints.P_7}</P_7>` : ''}
+          <P_20>2</P_20>
+          ${visualizationPoints.P_21 ? `<P_21>${visualizationPoints.P_21}</P_21>` : ''}
+          ${visualizationPoints.P_22 ? `<P_22>${visualizationPoints.P_22}</P_22>` : ''}
+          ${visualizationPoints.P_23 ? `<P_23>${visualizationPoints.P_23}</P_23>` : ''}
+          ${visualizationPoints.P_24 ? `<P_24>${visualizationPoints.P_24}</P_24>` : ''}
+          ${visualizationPoints.P_25 ? `<P_25>${visualizationPoints.P_25}</P_25>` : ''}
+          ${visualizationPoints.P_26 ? `<P_26>${visualizationPoints.P_26}</P_26>` : ''}
+          ${visualizationPoints.P_27 ? `<P_27>${visualizationPoints.P_27}</P_27>` : ''}
+          ${visualizationPoints.P_28 ? `<P_28>${visualizationPoints.P_28}</P_28>` : ''}
+          ${visualizationPoints.P_29 ? `<P_29>${visualizationPoints.P_29}</P_29>` : ''}
+          ${visualizationPoints.P_30 ? `<P_30>${visualizationPoints.P_30}</P_30>` : ''}
+          ${visualizationPoints.P_31 ? `<P_31>${visualizationPoints.P_31}</P_31>` : ''}
+          ${visualizationPoints.P_32 ? `<P_32>${visualizationPoints.P_32}</P_32>` : ''}
+          ${visualizationPoints.P_33 ? `<P_33>${visualizationPoints.P_33}</P_33>` : ''}
+          ${visualizationPoints.P_34 ? `<P_34>${visualizationPoints.P_34}</P_34>` : ''}
+          ${visualizationPoints.P_35 ? `<P_35>${visualizationPoints.P_35}</P_35>` : ''}
+          ${visualizationPoints.P_36 ? `<P_36>${visualizationPoints.P_36}</P_36>` : ''}
+          ${visualizationPoints.P_37 ? `<P_37>${visualizationPoints.P_37}</P_37>` : ''}
+          ${visualizationPoints.P_38 ? `<P_38>${visualizationPoints.P_38}</P_38>` : ''}
+          ${visualizationPoints.P_39 ? `<P_39>${visualizationPoints.P_39}</P_39>` : ''}
+          ${visualizationPoints.P_40 ? `<P_40>${visualizationPoints.P_40}</P_40>` : ''}
+          ${visualizationPoints.P_41 ? `<P_41>${visualizationPoints.P_41}</P_41>` : ''}
+          ${visualizationPoints.P_42 ? `<P_42>${visualizationPoints.P_42}</P_42>` : ''}
+          ${visualizationPoints.P_46 ? `<P_46>${visualizationPoints.P_46}</P_46>` : ''}
+          ${visualizationPoints.P_53 ? `<P_53>${visualizationPoints.P_53}</P_53>` : ''}
+          ${visualizationPoints.P_62 ? `<P_62>${visualizationPoints.P_62}</P_62>` : ''}
+        </PozycjeSzczegolowe>
+        <Pouczenia>1</Pouczenia>
+      </Deklaracja>`;
+    }
 
       const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
 

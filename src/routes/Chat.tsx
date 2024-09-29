@@ -39,21 +39,7 @@ export default function Chat() {
     const [formData, setFormData] = useState<Array<InputType>>([]);
     const [formChatState, setFormChatState] = useState<FormChatState>(FormChatState.unset);
 
-    const [vidualizationPoints, setVisualizationpoints] = useState<VisualozationPoints | null>({
-        P_1: "", P_2: "", P_3: "", P_4: "", P_5: "",
-        P_6: "", P_7: "", P_8: "", P_9: "", P_10: "",
-        P_11: "", P_12: "", P_13: "", P_14: "", P_15: "",
-        P_16: "", P_17: "", P_18: "", P_19: "", P_20: "",
-        P_21: "", P_22: "", P_23: "", P_24: "", P_25: "",
-        P_26: "", P_27: "", P_28: "", P_29: "", P_30: "",
-        P_31: "", P_32: "", P_33: "", P_34: "", P_35: "",
-        P_36: "", P_37: "", P_38: "", P_39: "", P_40: "",
-        P_41: "", P_42: "", P_43: "", P_44: "", P_45: "",
-        P_46: "", P_47: "", P_48: "", P_49: "", P_50: "",
-        P_51: "", P_52: "", P_53: "", P_54: "", P_55: "",
-        P_56: "", P_57: "", P_58: "", P_59: "", P_60: "",
-        P_61: "", P_62: ""
-    });
+    const [vidualizationPoints, setVisualizationpoints] = useState<VisualozationPoints | null>(null);
     
     const [isInactive, setIsInactive] = useState<boolean>(false);
 
@@ -213,7 +199,9 @@ export default function Chat() {
                         <input className="join-item btn w-full" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} disabled />
                     </div>
                     <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.form} onChange={() => setChatType(ChatType.form)} aria-label="Wypelnijmy wspolnie formularz" checked={chatType === ChatType.form} />
-                    <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.visualization} onChange={() => setChatType(ChatType.visualization)} aria-label="Wizualizacja pliku" checked={chatType === ChatType.visualization} />
+                    
+                    
+                    <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.visualization} onChange={() => setChatType(ChatType.visualization)} aria-label="Wizualizacja pliku" checked={chatType === ChatType.visualization} disabled={!vidualizationPoints} />
                 </div>
 
                 <div
