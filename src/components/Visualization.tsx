@@ -40,7 +40,7 @@ import css from "css";
 export default function Visualization({ visualizationPoints }: { visualizationPoints: VisualozationPoints }) {
   // const [visualizationElement, setVisualizationElement] = useState<HTMLDivElement | null>(null);
 
-  visualizationPoints["P_12"] = "skibidi"
+  
 
   // useEffect(() => {
     // const visualizationElementS = document.querySelector("#visualization") as HTMLDivElement;
@@ -264,7 +264,7 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
 
               // const dialog = document.querySelector("#puczenieDialog") as HTMLDialogElement;
 
-              dialog.showModal()
+              dialog?.showModal()
 
               // const caonVAl = confirm("Za podanie nieprawdy lub zatajenie prawdy i przez to narażenie podatku na uszczuplenie grozi odpowiedzialność przewidziana w Kodeksie karnym skarbowym. W przypadku niezapłacenia w obowiązującym terminie kwoty podatku od czynności cywilnoprawnych z poz. 53 lub wpłacenia jej w niepełnej wysokości, niniejsza deklaracja stanowi podstawę do wystawienia tytułu wykonawczego, zgodnie z przepisami ustawy z dnia 17 czerwca 1966 r. o postępowaniu egzekucyjnym w administracji (Dz. U. z 2023 r. poz. 2505).")
 

@@ -19,10 +19,10 @@ function App() {
 		createRoutesFromElements(
 			<Route path="/" element={<RootLayout />}>
 				<Route errorElement={<Unexpected />}>
-					<Route index={true} element={<Index />} />
+					{/* <Route index={true} element={<Index />} /> */}
 					<Route path="/login" element={<Login />} action={loginAction} />
 					<Route path="/register" element={<Register />} action={registerAction} />
-					<Route path="/chat" element={<Chat />} />
+					<Route index={true} element={<Chat />} />
 					<Route path="/test" element={<Test />} />
 
 					<Route path="/*" element={<NotFound />} />

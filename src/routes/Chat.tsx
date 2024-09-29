@@ -192,6 +192,7 @@ export default function Chat() {
                     setIsInactive(false);
                 }
     
+                await listenForMsgs();
                 await delay(1000 * 2);
             }
         };
@@ -233,7 +234,7 @@ export default function Chat() {
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
                                 {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>
-                        : <Visualization visualizationPoints={vidualizationPoints} />
+                        : <Visualization visualizationPoints={vidualizationPoints!} />
 
                     }
                 </div>
