@@ -39,7 +39,7 @@ export default function Chat() {
     const [formData, setFormData] = useState<Array<InputType>>([]);
     const [formChatState, setFormChatState] = useState<FormChatState>(FormChatState.unset);
 
-    const [vidualizationPoints, setVisualizationpoints] = useState<VisualozationPoints>(null);
+    const [vidualizationPoints, setVisualizationpoints] = useState<VisualozationPoints | null>(null);
     
     const [isInactive, setIsInactive] = useState<boolean>(false);
 
@@ -221,7 +221,7 @@ export default function Chat() {
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
                                 {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>
-                        : <Visualization visualizationPoints={vidualizationPoints} />
+                        : <Visualization visualizationPoints={vidualizationPoints!} />
 
                     }
                 </div>

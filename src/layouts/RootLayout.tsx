@@ -37,10 +37,10 @@ export default function RootLayout() {
 						<Link to={"/"}>logo</Link>
 					</h1>
 					<nav className="space-x-2">
-						<button className="btn btn-primary hover:btn-secondary" onClick={handleClick}>home</button>
+						{/* <button className="btn btn-primary hover:btn-secondary" onClick={handleClick}>home</button>
 						<Link to={"/login"} className="btn btn-secondary hover:btn-primary">login</Link>
 						<Link to={"/register"} className="btn btn-secondary hover:btn-primary">register</Link>
-						<Link to={"/chat"} className="btn btn-secondary hover:btn-primary">chat</Link>
+						<Link to={"/chat"} className="btn btn-secondary hover:btn-primary">chat</Link> */}
 					</nav>
 				</header>
 				<main className="flex-1">
