@@ -228,7 +228,7 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
           `
       }
 
-      const [dialog, setDialog] = useState<HTMLDialogElement>(null)
+      const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
 
       useEffect(() => {
         const a = document.querySelector("#pouczenieDialog") as HTMLDialogElement
