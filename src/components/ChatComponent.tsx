@@ -13,6 +13,13 @@ type Props = {
 export default function ChatComponent({ messages, refresfer, sendMessage, disabled } : Props) {
     const [chatBox, setChatBox] = useState<HTMLDivElement | null>(null);
 
+    const isLastMsgFromUser = () => {
+        if (messages.length === 0) return false;
+        if (messages[messages.length - 1].sender === MsgSender.chat) return false;
+
+        return true;
+    }
+
     useEffect(() => {
         const chatBox = document.querySelector("#chatBox") as HTMLDivElement;
         setChatBox(() => chatBox); 
@@ -49,7 +56,7 @@ export default function ChatComponent({ messages, refresfer, sendMessage, disabl
             </div>
 
             <textarea
-                disabled={disabled}
+                disabled={disabled || isLastMsgFromUser()}
                 name="userChatInput"
                 className="textarea textarea-bordered resize-none w-full mt-4 overflow-y-hidden"
                 rows={1}
