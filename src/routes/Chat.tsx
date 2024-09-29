@@ -157,7 +157,7 @@ export default function Chat() {
 
     return (
         <>
-            <SideMenu cookieHash={cookieHash} setCookieHash={setCookieHash} />
+            <SideMenu />
             <div className="space-y-4 my-2 flex flex-col h-full">
                 <div className="join mx-auto">
                     <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} />
