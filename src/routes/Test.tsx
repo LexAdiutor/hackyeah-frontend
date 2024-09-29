@@ -4,7 +4,7 @@ import Form from '../components/Form'
 const Test = () => {
   return (
     <div>
-        <Form data={[]} onFormChange={console.log}/>
+        {/* <Form data={[]} onFormChange={console.log}/> */}
     </div>
   )
 }
