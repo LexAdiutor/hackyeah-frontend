@@ -11,6 +11,8 @@ import Form from "../components/Form";
 import { InputType } from "../components/Input";
 
 const COOKIE_NAME = "chatHash";
+const PHANTOM_MSG_TIME = 1000 * 60 * 5;
+const PHANTOM_MSG_DATA = "Uzytkowniku, nadal jestes aktywny?";
 
 enum ChatType {
     taxes = "taxes",
@@ -35,6 +37,12 @@ export default function Chat() {
     const [formMessages, setFormMessages] = useState<Array<ChatBubbleData>>([]);
     const [formData, setFormData] = useState<Array<InputType>>([]);
     const [formChatState, setFormChatState] = useState<FormChatState>(FormChatState.unset);
+
+    // const a = setTimeout(() => {
+    //     console.log("timeout");
+    // }, (1000 * 60 * 5));
+
+    const [timeOut, setTimeOut] = useState<any>(null)
 
     const [cookieHash, setCookieHash] = useState<string | null>(null);
 
@@ -151,13 +159,33 @@ export default function Chat() {
     //     if (formData.length !== 0) setFormChatState(() => FormChatState.form);
     // }, [formData])
 
+    const setTimeOuts = () => {
+        clearTimeout(timeOut);
+        if (chatType === ChatType.visualization) return;
+        if (chatType === ChatType.taxes && taxMessages[taxMessages.length - 1]?.message !== PHANTOM_MSG_DATA) {
+            setTimeOut(() => setTimeout(() => {
+                setTaxMessages((prev) => [...prev, { message: PHANTOM_MSG_DATA, sender: MsgSender.chat }]);
+            }, PHANTOM_MSG_TIME))
+        }
+        if (chatType === ChatType.form && formMessages[formMessages.length - 1]?.message !== PHANTOM_MSG_DATA) {
+            setTimeOut(() => setTimeout(() => {
+                setFormMessages((prev) => [...prev, { message: PHANTOM_MSG_DATA, sender: MsgSender.chat }]);
+            }, PHANTOM_MSG_TIME))
+        }
+    }
+
+    useEffect(() => {
+        clearTimeout(timeOut);
+       setTimeOuts();
+    }, [chatType])
+
     useEffect(() => {
         initialLoad();
     }, [])
 
     return (
         <>
-            <SideMenu />
+            {/* <SideMenu /> */}
             <div className="space-y-4 my-2 flex flex-col h-full">
                 <div className="join mx-auto">
                     <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} />
