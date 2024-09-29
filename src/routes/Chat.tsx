@@ -11,7 +11,7 @@ import Form from "../components/Form";
 import { InputType } from "../components/Input";
 
 const COOKIE_NAME = "chatHash";
-const PHANTOM_MSG_TIME = 1000 * 60 * 5;
+const PHANTOM_MSG_TIME = 1000 * 10;
 const PHANTOM_MSG_DATA = "Uzytkowniku, nadal jestes aktywny?";
 
 enum ChatType {
@@ -38,13 +38,9 @@ export default function Chat() {
     const [formData, setFormData] = useState<Array<InputType>>([]);
     const [formChatState, setFormChatState] = useState<FormChatState>(FormChatState.unset);
 
-    // const a = setTimeout(() => {
-    //     console.log("timeout");
-    // }, (1000 * 60 * 5));
+    const [isInactive, setIsInactive] = useState<boolean>(false);
 
-    const [timeOut, setTimeOut] = useState<any>(null)
-
-    const [cookieHash, setCookieHash] = useState<string | null>(null);
+    const [lastUpdate, setLastUpdate] = useState<number>(Date.now());
 
     const setFormOk = () => {
         setFormChatState(() => FormChatState.preview);
@@ -53,6 +49,8 @@ export default function Chat() {
 
     const sendMessage = async (message: string, setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>, type: "GLOBAL" | "FORM") => {
         setMessages((prev) => [...prev, { message, sender: MsgSender.user }]);
+
+        resetTimer();
 
         const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/sendMessage`, {
             method: "POST",
@@ -75,7 +73,7 @@ export default function Chat() {
             secure: true,
         })
 
-        setCookieHash(() => hash);
+        resetTimer();
 
         await listenForMsgs();
     }
@@ -105,10 +103,6 @@ export default function Chat() {
         })
 
         const { form, formMessages: fMessaeges, globalMessages, ended } = await req.json();
-
-        console.log(form);
-
-
         
         setTaxMessages(() => globalMessages);
         setFormMessages(() => fMessaeges);
@@ -116,13 +110,7 @@ export default function Chat() {
 
         if (ended) setFormChatState(() => FormChatState.ended);
 
-
-
-            // console.log(form)
-
-
-
-        // if (newMessages[newMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") setFormChatState(() => FormChatState.notok);
+        resetTimer();
     }
 
     const initialLoad = async () => {
@@ -146,46 +134,48 @@ export default function Chat() {
     }
 
     useEffect(() => {
-        // if (!formMessages[formMessages.length - 1]) return;
-        // if (formMessages[formMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") {
-        //     setFormChatState(() => FormChatState.ended);
-        //     return;
-        // }
         if (formData.length !== 0) setFormChatState(() => FormChatState.form);
-
-    }, [formMessages, formData])
-
-    // useEffect(() => {
-    //     if (formData.length !== 0) setFormChatState(() => FormChatState.form);
-    // }, [formData])
-
-    const setTimeOuts = () => {
-        clearTimeout(timeOut);
-        if (chatType === ChatType.visualization) return;
-        if (chatType === ChatType.taxes && taxMessages[taxMessages.length - 1]?.message !== PHANTOM_MSG_DATA) {
-            setTimeOut(() => setTimeout(() => {
-                setTaxMessages((prev) => [...prev, { message: PHANTOM_MSG_DATA, sender: MsgSender.chat }]);
-            }, PHANTOM_MSG_TIME))
-        }
-        if (chatType === ChatType.form && formMessages[formMessages.length - 1]?.message !== PHANTOM_MSG_DATA) {
-            setTimeOut(() => setTimeout(() => {
-                setFormMessages((prev) => [...prev, { message: PHANTOM_MSG_DATA, sender: MsgSender.chat }]);
-            }, PHANTOM_MSG_TIME))
-        }
-    }
+    }, [formMessages, formData]);
 
     useEffect(() => {
-        clearTimeout(timeOut);
-       setTimeOuts();
+        resetTimer();
     }, [chatType])
 
     useEffect(() => {
         initialLoad();
+        resetTimer();
     }, [])
+
+    const resetTimer = () => {
+        setIsInactive(() => false);
+        setLastUpdate(Date.now());
+    }
+
+    useEffect(() => {
+        let isMounted = true;
+    
+        const incativityChecker = async () => {
+            while (isMounted) {    
+                if ((Date.now() - lastUpdate) > PHANTOM_MSG_TIME) {
+                    setIsInactive(true);
+                } else {
+                    setIsInactive(false);
+                }
+    
+                await delay(1000 * 2);
+            }
+        };
+    
+        incativityChecker();
+    
+        return () => {
+            isMounted = false;
+        };
+    }, [lastUpdate]);
+
 
     return (
         <>
-            {/* <SideMenu /> */}
             <div className="space-y-4 my-2 flex flex-col h-full">
                 <div className="join mx-auto">
                     <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} />
@@ -198,10 +188,10 @@ export default function Chat() {
                 >
                     {
                         chatType === ChatType.taxes ?
-                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} /> 
+                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} isInactive={isInactive} /> 
                         : chatType === ChatType.form ?
                             <div className="flex gap-4 h-full [&>*]:flex-1">
-                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} />
+                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} isInactive={isInactive} />
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
                                 {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>

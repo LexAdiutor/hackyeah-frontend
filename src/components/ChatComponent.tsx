@@ -4,21 +4,29 @@ import { ChatBubbleData } from "../utlis/ChatBubbleData";
 
 type Props = {
     messages: Array<ChatBubbleData>,
-    // setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>,
     refresfer: any,
     sendMessage: (message: string) => void,
     disabled: boolean,
+    isInactive: boolean,
 }
 
-export default function ChatComponent({ messages, refresfer, sendMessage, disabled } : Props) {
+export default function ChatComponent({ messages, refresfer, sendMessage, disabled, isInactive } : Props) {
     const [chatBox, setChatBox] = useState<HTMLDivElement | null>(null);
 
-    const isLastMsgFromUser = () => {
-        if (messages.length === 0) return false;
-        if (messages[messages.length - 1].sender === MsgSender.chat) return false;
+    const [isLastMsgFromUser, setIsLastMsgFromUser] = useState<boolean>(false);
 
-        return true;
-    }
+    useEffect(() => {
+        if (messages.length === 0) {
+            setIsLastMsgFromUser(() => false);
+            return;
+        }
+        if (messages[messages.length - 1].sender === MsgSender.chat) {
+            setIsLastMsgFromUser(() => false);
+            return;
+        }
+
+        setIsLastMsgFromUser(() => true);
+    }, [messages])
 
     useEffect(() => {
         const chatBox = document.querySelector("#chatBox") as HTMLDivElement;
@@ -52,11 +60,32 @@ export default function ChatComponent({ messages, refresfer, sendMessage, disabl
                         )
                     })
                 }
-                
+                {
+                    isLastMsgFromUser ?
+                        <div className="chat chat-start">
+                            <div className="chat-bubble">
+                                <div className="bouncing-loader relative top-3">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    : ""
+                }
+                {
+                    isInactive && !isLastMsgFromUser ?
+                        <div className="chat chat-start">
+                            <div className="chat-bubble">
+                                  <pre className="text-wrap break-words">Uzytkowniku, nadal jestes aktywny?</pre>
+                            </div>
+                        </div>
+                    : ""
+                }
             </div>
 
             <textarea
-                disabled={disabled || isLastMsgFromUser()}
+                disabled={disabled || isLastMsgFromUser}
                 name="userChatInput"
                 className="textarea textarea-bordered resize-none w-full mt-4 overflow-y-hidden"
                 rows={1}
@@ -66,24 +95,17 @@ export default function ChatComponent({ messages, refresfer, sendMessage, disabl
                         const message = event.currentTarget.value;
                         event.currentTarget.value = "";
 
-                        // console.log(message)
-
-                        await sendMessage(message);
-
-                        // setMessages((prev) => [...prev, { sender: MsgSender.user, message }]);
-
-                        // setTimeout(() => {
-                        //     setMessages((prev) => [...prev, { sender: MsgSender.chat, message: Math.random().toString() }])
-                        // }, 1000)
-                        
-
-                        // setTimeout(() => {
-                        //     if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
-                        // }, 50)
+                        if (chatBox) await sendMessage(message);
                     }
+                }}
 
-                    // event.currentTarget.style.height = "1px"
-                    // event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`
+                onChange={(event) => {
+                    event.currentTarget.style.height = "1px"
+                    event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`
+
+                    setTimeout(() => {
+
+                    })
                 }}
             />
             
