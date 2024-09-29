@@ -24,7 +24,7 @@ enum FormChatState {
     unset = 'unset',
     form = "form",
     preview = "preview",
-    wrong = "wrong",
+    ended = "ended",
 }
 
 const delay = async (time: number) => {
@@ -104,7 +104,7 @@ export default function Chat() {
             },
         })
 
-        const { form, formMessages: fMessaeges, globalMessages } = await req.json();
+        const { form, formMessages: fMessaeges, globalMessages, ended } = await req.json();
 
         console.log(form);
 
@@ -114,7 +114,7 @@ export default function Chat() {
         setFormMessages(() => fMessaeges);
         setFormData(() => form ?? []);
 
-
+        if (ended) setFormChatState(() => FormChatState.ended);
 
 
 
@@ -146,11 +146,11 @@ export default function Chat() {
     }
 
     useEffect(() => {
-        if (!formMessages[formMessages.length - 1]) return;
-        if (formMessages[formMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") {
-            setFormChatState(() => FormChatState.wrong);
-            return;
-        }
+        // if (!formMessages[formMessages.length - 1]) return;
+        // if (formMessages[formMessages.length - 1].message === "Przepraszamy, ale nie wspieramy wypełniania wniosku dla tego podatku.") {
+        //     setFormChatState(() => FormChatState.ended);
+        //     return;
+        // }
         if (formData.length !== 0) setFormChatState(() => FormChatState.form);
 
     }, [formMessages, formData])
@@ -201,7 +201,7 @@ export default function Chat() {
                             <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} /> 
                         : chatType === ChatType.form ?
                             <div className="flex gap-4 h-full [&>*]:flex-1">
-                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.wrong} />
+                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} />
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
                                 {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>
