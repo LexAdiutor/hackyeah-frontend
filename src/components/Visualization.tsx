@@ -1,14 +1,71 @@
 // nie rozmawiamy o tym pliku
+import { useEffect, useState } from "react";
 import type { VisualozationPoints } from "../utlis/Visualizationpoints";
 import "./Visualization.css" 
+import { parseDocument } from "htmlparser2";
+import { html, load, xml } from "cheerio";
+import css from "css";
 
+function htmltoxml(html: string, stylesheet: string) {
+
+
+  const a = load(html, {xmlMode: false})
+
+  const xml = a.xml();
+
+  return xml;
+}
+
+function downloadFile(file) {
+  // Create a link and set the URL using `createObjectURL`
+  const link = document.createElement("a");
+  link.style.display = "none";
+  link.href = URL.createObjectURL(file);
+  link.download = file.name;
+
+  // It needs to be added to the DOM so it can be clicked
+  document.body.appendChild(link);
+  link.click();
+
+  // To make this work on Firefox we need to wait
+  // a little while before removing it.
+  setTimeout(() => {
+    URL.revokeObjectURL(link.href);
+    link.parentNode.removeChild(link);
+  }, 0);
+}
 
 export default function Visualization({ visualizationPoints }: { visualizationPoints: VisualozationPoints }) {
+  const [visualizationElement, setVisualizationElement] = useState<HTMLDivElement | null>(null);
 
-  // Object.entries(visualizationPoints).forEach(element => {
-    // visualizationPoints[element[0]] = Math.random()
-  // });
+  useEffect(() => {
+    const visualizationElementS = document.querySelector("#visualization") as HTMLDivElement;
+    setVisualizationElement(() => visualizationElementS)
+  }, [])
     return (
+      <div>
+          <button
+            onClick={()=> {
+
+            const html = visualizationElement.innerHTML;
+
+              // console.log(styles)
+
+
+              const xmlOutput = htmltoxml(html, stylesheet);
+              const blob = new Blob([xmlOutput], { type: 'text/plain' });
+
+              downloadFile(blob)
+
+              
+              // console.log(xmlOutput)
+
+
+            }}
+          >
+            save
+          </button>
+
     <div className="deklaracja" id="visualization">
       <div className="naglowek">
         <table>
@@ -575,6 +632,7 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
   </small>
 </h3>
 
+    </div>
     </div>
   );
 };
