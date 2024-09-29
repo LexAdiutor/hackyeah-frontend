@@ -6,56 +6,257 @@ import { parseDocument } from "htmlparser2";
 import { html, load, xml } from "cheerio";
 import css from "css";
 
-function htmltoxml(html: string, stylesheet: string) {
+// function htmltoxml(html: string, stylesheet: string) {
 
 
-  const a = load(html, {xmlMode: false})
+//   const a = load(html, {xmlMode: false})
 
-  const xml = a.xml();
+//   const xml = a.xml();
 
-  return xml;
-}
+//   return xml;
+// }
 
-function downloadFile(file) {
-  // Create a link and set the URL using `createObjectURL`
-  const link = document.createElement("a");
-  link.style.display = "none";
-  link.href = URL.createObjectURL(file);
-  link.download = file.name;
+// function downloadFile(file) {
+//   // Create a link and set the URL using `createObjectURL`
+//   const link = document.createElement("a");
+//   link.style.display = "none";
+//   link.href = URL.createObjectURL(file);
+//   link.download = file.name;
 
-  // It needs to be added to the DOM so it can be clicked
-  document.body.appendChild(link);
-  link.click();
+//   // It needs to be added to the DOM so it can be clicked
+//   document.body.appendChild(link);
+//   link.click();
 
-  // To make this work on Firefox we need to wait
-  // a little while before removing it.
-  setTimeout(() => {
-    URL.revokeObjectURL(link.href);
-    link.parentNode.removeChild(link);
-  }, 0);
-}
+//   // To make this work on Firefox we need to wait
+//   // a little while before removing it.
+//   setTimeout(() => {
+//     URL.revokeObjectURL(link.href);
+//     link.parentNode.removeChild(link);
+//   }, 0);
+// }
+
+
 
 export default function Visualization({ visualizationPoints }: { visualizationPoints: VisualozationPoints }) {
-  const [visualizationElement, setVisualizationElement] = useState<HTMLDivElement | null>(null);
+  // const [visualizationElement, setVisualizationElement] = useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const visualizationElementS = document.querySelector("#visualization") as HTMLDivElement;
-    setVisualizationElement(() => visualizationElementS)
-  }, [])
+  visualizationPoints["P_12"] = "skibidi"
+
+  // useEffect(() => {
+    // const visualizationElementS = document.querySelector("#visualization") as HTMLDivElement;
+    // setVisualizationElement(() => visualizationElementS)
+
+      function generateXML() {
+          return `
+            <Deklaracja>
+              <Naglowek>
+                <KodFormularza kodSystemowy="PCC-3 (6)" kodPodatku="PCC" rodzajZobowiazania="Z" wersjaSchemy="1-0E">PCC-3</KodFormularza>
+                <WariantFormularza>6</WariantFormularza>
+                <CelZlozenia poz="P_6">${visualizationPoints.P_6}</CelZlozenia>
+                <Data poz="P_4">${visualizationPoints.P_4}</Data>
+                <KodUrzedu>0271</KodUrzedu>
+              </Naglowek>
+
+              <Podmiot1 rola="Podatnik">
+                <OsobaFizyczna>
+                  ${visualizationPoints.P_1.length === 11 ? "<PESEL>" + visualizationPoints.P_1 + "</PESEL>" : "<NIP>" + visualizationPoints.P_1 + "</NIP>"}
+                  <ImiePierwsze>${visualizationPoints.P_9.split(" ")[1]}</ImiePierwsze>
+                  <Nazwisko>${visualizationPoints.P_9.split(" ")[0]}</Nazwisko>
+                  <DataUrodzenia>${visualizationPoints.P_9.split(" ")[2]}</DataUrodzenia>
+                </OsobaFizyczna>
+                <AdresZamieszkaniaSiedziby rodzajAdresu="RAD">
+                  <AdresPol>
+                    <KodKraju>PL</KodKraju>
+                    <Wojewodztwo>${visualizationPoints.P_12}</Wojewodztwo>
+                    <Powiat>${visualizationPoints.P_13}</Powiat>
+                    <Gmina>${visualizationPoints.P_14}</Gmina>
+                    <Ulica>${visualizationPoints.P_15}</Ulica>
+                    <NrDomu>${visualizationPoints.P_16}</NrDomu>
+                    <NrLokalu>${visualizationPoints.P_17}</NrLokalu>
+                    <Miejscowosc>${visualizationPoints.P_18}</Miejscowosc>
+                    <KodPocztowy>${visualizationPoints.P_19}</KodPocztowy>
+                  </AdresPol>
+                </AdresZamieszkaniaSiedziby>
+              </Podmiot1>
+
+              <PozycjeSzczegolowe>
+                <P_7>${visualizationPoints.P_7}</P_7>
+                <P_20>${visualizationPoints.P_20}</P_20>
+                <P_21>${visualizationPoints.P_21}</P_21>
+                <P_22>${visualizationPoints.P_22}</P_22>
+                <P_23>${visualizationPoints.P_23}</P_23>
+                ${
+                  visualizationPoints.P_24 ? 
+                  `
+                  <P_24>${visualizationPoints.P_24}</P_24>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_25 ? 
+                  `
+                  <P_25>${visualizationPoints.P_25}</P_25>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_26 ? 
+                  `
+                  <P_26>${visualizationPoints.P_26}</P_26>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_27 ? 
+                  `
+                  <P_27>${visualizationPoints.P_27}</P_27>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_28 ? 
+                  `
+                  <P_28>${visualizationPoints.P_28}</P_28>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_29 ? 
+                  `
+                  <P_29>${visualizationPoints.P_29}</P_29>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_30 ? 
+                  `
+                  <P_30>${visualizationPoints.P_30}</P_30>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_31 ? 
+                  `
+                  <P_31>${visualizationPoints.P_31}</P_31>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_32 ? 
+                  `
+                  <P_32>${visualizationPoints.P_32}</P_32>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_33 ? 
+                  `
+                  <P_33>${visualizationPoints.P_33}</P_33>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_34 ? 
+                  `
+                  <P_34>${visualizationPoints.P_34}</P_34>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_35 ? 
+                  `
+                  <P_35>${visualizationPoints.P_35}</P_35>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_36 ? 
+                  `
+                  <P_36>${visualizationPoints.P_36}</P_36>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_37 ? 
+                  `
+                  <P_37>${visualizationPoints.P_37}</P_37>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_38 ? 
+                  `
+                  <P_38>${visualizationPoints.P_38}</P_38>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_39 ? 
+                  `
+                  <P_39>${visualizationPoints.P_39}</P_39>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_40 ? 
+                  `
+                  <P_40>${visualizationPoints.P_40}</P_40>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_41 ? 
+                  `
+                  <P_41>${visualizationPoints.P_41}</P_41>
+                  ` 
+                : ""}
+                
+                ${
+                  visualizationPoints.P_42 ? 
+                  `
+                  <P_42>${visualizationPoints.P_42}</P_42>
+                  ` 
+                : ""}
+                
+                <P_46>${visualizationPoints.P_46}</P_46>
+                <P_53>${visualizationPoints.P_46}</P_53>
+                <P_62>${visualizationPoints.P_62}</P_62>
+              </PozycjeSzczegolowe>
+              <Pouczenia>1</Pouczenia>
+
+            </Deklaracja>
+          `
+      }
+
+
+  // }, [])
     return (
       <div>
           <button
             onClick={()=> {
 
-            const html = visualizationElement.innerHTML;
+              const xml = generateXML()
 
-              // console.log(styles)
+              const blob = new Blob([xml], { type: "text/plain"})
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'pcc-3-6.xml';
+
+              document.body.appendChild(a)
+              a.click()
+              document.body.removeChild(a)
 
 
-              const xmlOutput = htmltoxml(html, stylesheet);
-              const blob = new Blob([xmlOutput], { type: 'text/plain' });
+            // const html = visualizationElement.innerHTML;
 
-              downloadFile(blob)
+            //   // console.log(styles)
+
+
+            //   const xmlOutput = htmltoxml(html, stylesheet);
+            //   const blob = new Blob([xmlOutput], { type: 'text/plain' });
+
+            //   downloadFile(blob)
 
               
               // console.log(xmlOutput)
@@ -163,15 +364,15 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
             <tbody>
               <tr>
                 <td className="wypelniane">
-                  <div className="opisrubryki">Kraj</div>
+                  <div className="opisrubryki">Kraj {visualizationPoints.P_11}</div>
                   PL&nbsp;
                   <span className="nazwa-dla-kodu">(POLSKA)</span>
                 </td>
                 <td className="wypelniane" style={{ width: '40%' }}>
-                  <div className="opisrubryki">Województwo</div>
+                  <div className="opisrubryki">Województwo {visualizationPoints.P_12}</div>
                 </td>
                 <td className="wypelniane" style={{ width: '40%' }}>
-                  <div className="opisrubryki">Powiat</div>
+                  <div className="opisrubryki">Powiat {visualizationPoints.P_13}</div>
                 </td>
               </tr>
             </tbody>
@@ -180,16 +381,16 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
             <tbody>
               <tr>
                 <td className="wypelniane" style={{ width: '35%' }}>
-                  <div className="opisrubryki">Gmina</div>
+                  <div className="opisrubryki">Gmina {visualizationPoints.P_14}</div>
                 </td>
                 <td className="wypelniane">
-                  <div className="opisrubryki">Ulica</div>
+                  <div className="opisrubryki">Ulica {visualizationPoints.P_15}</div>
                 </td>
                 <td className="wypelniane" style={{ width: '10%' }}>
-                  <div className="opisrubryki">Nr domu</div>
+                  <div className="opisrubryki">Nr domu {visualizationPoints.P_16}</div>
                 </td>
                 <td className="wypelniane" style={{ width: '10%' }}>
-                  <div className="opisrubryki">Nr lokalu</div>
+                  <div className="opisrubryki">Nr lokalu {visualizationPoints.P_17}</div>
                 </td>
               </tr>
             </tbody>
@@ -198,10 +399,10 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
             <tbody>
               <tr>
                 <td className="wypelniane">
-                  <div className="opisrubryki">Miejscowość</div>
+                  <div className="opisrubryki">Miejscowość {visualizationPoints.P_18}</div>
                 </td>
                 <td className="wypelniane">
-                  <div className="opisrubryki">Kod pocztowy</div>
+                  <div className="opisrubryki">Kod pocztowy {visualizationPoints.P_19}</div>
                 </td>
               </tr>
             </tbody>

@@ -33,7 +33,7 @@ const delay = async (time: number) => {
 }
 
 export default function Chat() {
-    const [chatType, setChatType] = useState<ChatType>(ChatType.taxes);
+    const [chatType, setChatType] = useState<ChatType>(ChatType.form);
     const [taxMessages, setTaxMessages] = useState<Array<ChatBubbleData>>([]);
     const [formMessages, setFormMessages] = useState<Array<ChatBubbleData>>([]);
     const [formData, setFormData] = useState<Array<InputType>>([]);
@@ -119,11 +119,13 @@ export default function Chat() {
             },
         })
 
-        const { form, formMessages: fMessaeges, globalMessages, ended } = await req.json();
+        const { form, formMessages: fMessaeges, globalMessages, ended, fields } = await req.json();
         
         setTaxMessages(() => globalMessages);
         setFormMessages(() => fMessaeges);
         setFormData(() => form ?? []);
+
+        setVisualizationpoints(() => fields);
 
         if (ended) setFormChatState(() => FormChatState.ended);
 
@@ -195,7 +197,9 @@ export default function Chat() {
         <>
             <div className="space-y-4 my-2 flex flex-col h-full">
                 <div className="join mx-auto">
-                    <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} />
+                    <div className="tooltip" data-tip="w budowie">
+                        <input className="join-item btn w-full" type="radio" name="taxPayerType" value={ChatType.taxes} onChange={() => setChatType(ChatType.taxes)} aria-label="Porozmawiajmy o podatkach" checked={chatType === ChatType.taxes} disabled />
+                    </div>
                     <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.form} onChange={() => setChatType(ChatType.form)} aria-label="Wypelnijmy wspolnie formularz" checked={chatType === ChatType.form} />
                     <input className="join-item btn w-1/3" type="radio" name="taxPayerType" value={ChatType.visualization} onChange={() => setChatType(ChatType.visualization)} aria-label="Wizualizacja pliku" checked={chatType === ChatType.visualization} />
                 </div>
@@ -205,10 +209,16 @@ export default function Chat() {
                 >
                     {
                         chatType === ChatType.taxes ?
-                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} isInactive={isInactive} resetTimer={resetTimer} /> 
+                        // <div className="grid [&>*]:col-start-1 [&>*]:col-end-1 [&>*]:row-start-1 [&>*]:row-end-1 place-content-center">
+                            // <p>w budowe</p>
+                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={true} isInactive={isInactive} resetTimer={resetTimer} /> 
+                        // </div>
+                            
                         : chatType === ChatType.form ?
                             <div className="flex gap-4 h-full [&>*]:flex-1">
-                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} isInactive={isInactive} resetTimer={resetTimer} />
+                                
+                                                               <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} isInactive={isInactive} resetTimer={resetTimer} />
+     
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
                                 {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>
