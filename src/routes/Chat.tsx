@@ -42,9 +42,20 @@ export default function Chat() {
 
     const [lastUpdate, setLastUpdate] = useState<number>(Date.now());
 
-    const setFormOk = () => {
+    const setFormOk = async () => {
         setFormChatState(() => FormChatState.preview);
         setFormData(() => []);
+
+        const req = await fetch(`${import.meta.env.VITE_API_BACKEND_URL}/chat/getChat`, {
+            method: "GET",
+            headers: {
+                "Authorization": Cookies.get(COOKIE_NAME) ?? "",
+            },
+        })
+
+        const { form, formMessages: fMessaeges, globalMessages, ended } = await req.json();
+
+        setFormMessages(fMessaeges);
     }
 
     const sendMessage = async (message: string, setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>, type: "GLOBAL" | "FORM") => {
