@@ -228,10 +228,29 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
           `
       }
 
+      const [dialog, setDialog] = useState<HTMLDialogElement>(null)
+
+      useEffect(() => {
+        const a = document.querySelector("#pouczenieDialog") as HTMLDialogElement
+        setDialog(() => a)
+      })
 
   // }, [])
     return (
       <div>
+
+          <dialog id="pouczenieDialog" className="modal">
+            <div className="modal-box">
+              <h3 className="text-lg font-bold">Hello!</h3>
+              <p className="py-4">Press ESC key or click the button below to close</p>
+              <div className="modal-action">
+                <form method="dialog">
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+
           <button
             onClick={()=> {
 
@@ -243,9 +262,18 @@ export default function Visualization({ visualizationPoints }: { visualizationPo
               a.href = url;
               a.download = 'pcc-3-6.xml';
 
-              document.body.appendChild(a)
+              // const dialog = document.querySelector("#puczenieDialog") as HTMLDialogElement;
+
+              dialog.showModal()
+
+              // const caonVAl = confirm("Za podanie nieprawdy lub zatajenie prawdy i przez to narażenie podatku na uszczuplenie grozi odpowiedzialność przewidziana w Kodeksie karnym skarbowym. W przypadku niezapłacenia w obowiązującym terminie kwoty podatku od czynności cywilnoprawnych z poz. 53 lub wpłacenia jej w niepełnej wysokości, niniejsza deklaracja stanowi podstawę do wystawienia tytułu wykonawczego, zgodnie z przepisami ustawy z dnia 17 czerwca 1966 r. o postępowaniu egzekucyjnym w administracji (Dz. U. z 2023 r. poz. 2505).")
+
+              // if (caonVAl) {
+               document.body.appendChild(a)
               a.click()
-              document.body.removeChild(a)
+              document.body.removeChild(a) 
+              // }
+              
 
 
             // const html = visualizationElement.innerHTML;
