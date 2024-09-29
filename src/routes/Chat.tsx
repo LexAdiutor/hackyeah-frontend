@@ -11,7 +11,7 @@ import Form from "../components/Form";
 import { InputType } from "../components/Input";
 
 const COOKIE_NAME = "chatHash";
-const PHANTOM_MSG_TIME = 1000 * 10;
+const PHANTOM_MSG_TIME = 1000 * 60 * 5;
 const PHANTOM_MSG_DATA = "Uzytkowniku, nadal jestes aktywny?";
 
 enum ChatType {
@@ -188,10 +188,10 @@ export default function Chat() {
                 >
                     {
                         chatType === ChatType.taxes ?
-                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} isInactive={isInactive} /> 
+                            <ChatComponent messages={taxMessages} refresfer={chatType} sendMessage={(message: string) => sendMessage(message, setTaxMessages, "GLOBAL")} disabled={false} isInactive={isInactive} resetTimer={resetTimer} /> 
                         : chatType === ChatType.form ?
                             <div className="flex gap-4 h-full [&>*]:flex-1">
-                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} isInactive={isInactive} />
+                                <ChatComponent messages={formMessages} refresfer={chatType} sendMessage={(mesaage: string) => sendMessage(mesaage, setFormMessages, "FORM")} disabled={formChatState === FormChatState.form || formChatState === FormChatState.ended} isInactive={isInactive} resetTimer={resetTimer} />
                                 {formChatState === FormChatState.preview ? <Preview /> : ""}
                                 {formChatState === FormChatState.form ? <Form data={formData} setFormOk={setFormOk} /> : ""}
                             </div>
@@ -203,5 +203,3 @@ export default function Chat() {
         </>
     )
 }
-
-// Przepraszmy, ale nie wspierazmy wypelniania wniosku dla tego podatku.

@@ -8,9 +8,10 @@ type Props = {
     sendMessage: (message: string) => void,
     disabled: boolean,
     isInactive: boolean,
+    resetTimer: () => void,
 }
 
-export default function ChatComponent({ messages, refresfer, sendMessage, disabled, isInactive } : Props) {
+export default function ChatComponent({ messages, refresfer, sendMessage, disabled, isInactive, resetTimer } : Props) {
     const [chatBox, setChatBox] = useState<HTMLDivElement | null>(null);
 
     const [isLastMsgFromUser, setIsLastMsgFromUser] = useState<boolean>(false);
@@ -100,12 +101,10 @@ export default function ChatComponent({ messages, refresfer, sendMessage, disabl
                 }}
 
                 onChange={(event) => {
-                    event.currentTarget.style.height = "1px"
-                    event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`
+                    event.currentTarget.style.height = "1px";
+                    event.currentTarget.style.height = `${event.currentTarget.scrollHeight}px`;
 
-                    setTimeout(() => {
-
-                    })
+                    resetTimer();
                 }}
             />
             
