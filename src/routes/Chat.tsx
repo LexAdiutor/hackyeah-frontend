@@ -40,6 +40,7 @@ export default function Chat() {
 
     const setFormOk = () => {
         setFormChatState(() => FormChatState.preview);
+        setFormData(() => []);
     }
 
     const sendMessage = async (message: string, setMessages: React.Dispatch<React.SetStateAction<Array<ChatBubbleData>>>, type: "GLOBAL" | "FORM") => {
@@ -96,6 +97,8 @@ export default function Chat() {
         })
 
         const { form, formMessages: fMessaeges, globalMessages } = await req.json();
+
+        console.log(form);
 
 
         

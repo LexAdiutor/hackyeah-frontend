@@ -1,7 +1,7 @@
 export default function Preview() {
 
     return (
-        <div className="[&>h3]:mt-8 [&>h3]:mb-2 [&>h3]:font-semibold">
+        <div className="[&>h3]:mt-8 [&>h3]:mb-2 [&>h3]:font-semibold overflow-y-auto">
             <h2 className="text-3xl font-bold">PCC-(6)</h2>
 
             <h3>Okres, miejsce i cel składania deklaracji</h3>
