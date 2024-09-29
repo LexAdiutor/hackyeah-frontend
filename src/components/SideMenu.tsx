@@ -27,7 +27,7 @@ export default function SideMenu({}: Props) {
 
     return (
         <>
-            <div className={`flex flex-col gap-4 absolute z-50 top-32 left-0 p-12 transition duration-200 rounded-lg bg-primary ${isOpen ? "translate-x-2" : "-translate-x-48"}`}>
+            <div className={`flex flex-col gap-4 fixed z-50 top-32 left-0 p-12 transition duration-200 rounded-lg bg-primary ${isOpen ? "translate-x-2" : "-translate-x-48"}`}>
                 <button className="btn btn-circle btn-sm absolute top-2 right-2" onClick={() => setIsOpen((prev) => !prev)}>
                     <span className="icon">{isOpen ? "close" : "chevron_right"}</span>
                 </button>

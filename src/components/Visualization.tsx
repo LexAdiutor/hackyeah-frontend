@@ -1,8 +1,13 @@
 // nie rozmawiamy o tym pliku
+import type { VisualozationPoints } from "../utlis/Visualizationpoints";
 import "./Visualization.css" 
 
 
-export default function Visualization() {
+export default function Visualization({ visualizationPoints }: { visualizationPoints: VisualozationPoints }) {
+
+  // Object.entries(visualizationPoints).forEach(element => {
+    // visualizationPoints[element[0]] = Math.random()
+  // });
     return (
     <div className="deklaracja" id="visualization">
       <div className="naglowek">
@@ -81,7 +86,7 @@ export default function Visualization() {
           <tbody>
             <tr>
               <td className="wypelniane">
-                <div className="opisrubryki">7. Podmiot składający deklarację:</div>
+                <div className="opisrubryki">7. Podmiot składający deklarację: {visualizationPoints.P_7}</div>
               </td>
             </tr>
           </tbody>
@@ -90,7 +95,7 @@ export default function Visualization() {
           <tbody>
             <tr>
               <td className="wypelniane">
-                <div className="opisrubryki">8. Rodzaj podatnika:</div>
+                <div className="opisrubryki">8. Rodzaj podatnika: {visualizationPoints.P_8} </div>
               </td>
             </tr>
           </tbody>
@@ -152,22 +157,22 @@ export default function Visualization() {
         <tbody>
           <tr>
             <td className="wypelniane">
-              <div className="opisrubryki">20. Przedmiot opodatkowania:</div>
+              <div className="opisrubryki">20. Przedmiot opodatkowania: {visualizationPoints.P_20}</div>
             </td>
           </tr>
           <tr>
             <td className="wypelniane">
-              <div className="opisrubryki">21. Miejsce położenia rzeczy lub miejsce wykonywania prawa majątkowego:</div>
+              <div className="opisrubryki">21. Miejsce położenia rzeczy lub miejsce wykonywania prawa majątkowego: {visualizationPoints.P_21}</div>
             </td>
           </tr>
           <tr>
             <td className="wypelniane">
-              <div className="opisrubryki">22. Miejsce dokonania czynności cywilnoprawnej:</div>
+              <div className="opisrubryki">22. Miejsce dokonania czynności cywilnoprawnej: {visualizationPoints.P_22}</div>
             </td>
           </tr>
           <tr>
             <td className="wypelniane" style={{ width: '50%' }}>
-              <div className="opisrubryki">23. Zwięzłe określenie treści i przedmiotu czynności cywilnoprawnej</div>
+              <div className="opisrubryki">23. Zwięzłe określenie treści i przedmiotu czynności cywilnoprawnej: {visualizationPoints.P_23}</div>
             </td>
           </tr>
         </tbody>
@@ -212,7 +217,7 @@ export default function Visualization() {
             </td>
             <td className="wypelniane" style={{ width: '12%' }}>
               <div className="opisrubryki">24.</div>
-              <div className="kwota">zł</div>
+              <div className="kwota">{visualizationPoints.P_24} zł</div>
             </td>
             <td className="niewypelnianeopisy" style={{ width: '12%' }}>
               <h1>
@@ -221,13 +226,13 @@ export default function Visualization() {
             </td>
             <td className="wypelniane" style={{ width: '12%' }}>
               <div className="opisrubryki">25.</div>
-              <div className="kwota">zł</div>
+              <div className="kwota">{visualizationPoints.P_25} zł</div>
             </td>
           </tr>
           <tr>
             <td className="wypelniane" style={{ width: '12%' }}>
               <div className="opisrubryki">26.</div>
-              <div className="kwota">zł</div>
+              <div className="kwota">{visualizationPoints.P_26} zł</div>
             </td>
             <td className="niewypelnianeopisy" style={{ width: '12%' }}>
               <h1>
@@ -236,91 +241,23 @@ export default function Visualization() {
             </td>
             <td className="wypelniane" style={{ width: '12%' }}>
               <div className="opisrubryki">27.</div>
-              <div className="kwota">zł</div>
+              <div className="kwota">{visualizationPoints.P_27} zł</div>
             </td>
           </tr>
 
-
-
-          <tr>
-          <td className="niewypelniane" style={{ width: '40%' }}>
-            Rodzaj czynności cywilnoprawnej
-            <small style={{ fontWeight: 'normal' }}>
-              <br />(w tym zmiana umowy, orzeczenie sądu lub ugoda)
-            </small>
-          </td>
-          <td className="niewypelniane" style={{ width: '25%' }}>
-            Podstawa opodatkowania
-            <small style={{ fontWeight: 'normal' }}>
-              <br />określona zgodnie z art. 6 ustawy
-              <br />(po zaokrągleniu do pełnych złotych)
-            </small>
-          </td>
-          <td className="niewypelniane" style={{ width: '10%' }}>
-            Stawka podatku
-            <small style={{ fontWeight: 'normal' }}>
-              <br />określona zgodnie z art. 7 ustawy
-            </small>
-          </td>
-          <td className="niewypelniane" style={{ width: '25%' }}>
-            Obliczony należny podatek od czynności cywilnoprawnej
-            <small style={{ fontWeight: 'normal' }}>
-              <br />(po zaokrągleniu do pełnych złotych)
-            </small>
-          </td>
-        </tr>
-        <tr>
-          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>a</td>
-          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>b</td>
-          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>c</td>
-          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>d</td>
-        </tr>
-        <tr>
-          <td className="niewypelnianeopisy" style={{ width: '35%' }} rowSpan={2}>
-            Umowa sprzedaży<sup>3)</sup>
-          </td>
-          <td className="wypelniane" style={{ width: '12%' }}>
-            <div className="opisrubryki">24.</div>
-            <div className="kwota">zł</div>
-          </td>
-          <td className="niewypelnianeopisy" style={{ width: '12%' }}>
-            <h1>
-              <div>1%</div>
-            </h1>
-          </td>
-          <td className="wypelniane" style={{ width: '12%' }}>
-            <div className="opisrubryki">25.</div>
-            <div className="kwota">zł</div>
-          </td>
-        </tr>
-        <tr>
-          <td className="wypelniane" style={{ width: '12%' }}>
-            <div className="opisrubryki">26.</div>
-            <div className="kwota">zł</div>
-          </td>
-          <td className="niewypelnianeopisy" style={{ width: '12%' }}>
-            <h1>
-              <div>2%</div>
-            </h1>
-          </td>
-          <td className="wypelniane" style={{ width: '12%' }}>
-            <div className="opisrubryki">27.</div>
-            <div className="kwota">zł</div>
-          </td>
-        </tr>
         <tr>
           <td className="niewypelnianeopisy" style={{ width: '35%' }}>Umowa zamiany</td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">28.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_28} zł</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">29.</div>
-            <div className="kwota">%</div>
+            <div className="kwota">{visualizationPoints.P_29}%</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">30.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_30} zł</div>
           </td>
         </tr>
         {/* Add the remaining rows in a similar manner */}
@@ -330,52 +267,52 @@ export default function Visualization() {
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">31.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_31} zł</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">32.</div>
-            <div className="kwota">%</div>
+            <div className="kwota">{visualizationPoints.P_32}%</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">33.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_33} zł</div>
           </td>
         </tr>
         <tr>
           <td className="niewypelnianeopisy" style={{ width: '35%' }}>Umowa darowizny w części dotyczącej przejęcia przez obdarowanego długów i ciężarów lub zobowiązań darczyńcy</td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">34.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_34} zł</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">35.</div>
-            <div className="kwota">%</div>
+            <div className="kwota">{visualizationPoints.P_35}%</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">36.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_36} zł</div>
           </td>
         </tr>
         <tr>
           <td className="niewypelnianeopisy" style={{ width: '35%' }}>Ustanowienie odpłatnego użytkowania, w tym nieprawidłowego</td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">37.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_37} zł</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">38.</div>
-            <div className="kwota">%</div>
+            <div className="kwota">{visualizationPoints.P_38}%</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">39.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_39} zł</div>
           </td>
         </tr>
         <tr>
           <td className="niewypelnianeopisy" style={{ width: '35%' }} rowSpan={2}>Ustanowienie hipoteki<sup>5)</sup></td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">40.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_40} zł</div>
           </td>
           <td className="niewypelnianeopisy" style={{ width: '12%' }}>
             <h1>
@@ -384,7 +321,7 @@ export default function Visualization() {
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">41.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_41} zł</div>
           </td>
         </tr>
         <tr>
@@ -396,7 +333,7 @@ export default function Visualization() {
           <td className="niewypelnianeopisyright" style={{ width: '12%' }}>19 zł</td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">42.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_42} zł</div>
           </td>
         </tr>
         <tr>
@@ -408,18 +345,34 @@ export default function Visualization() {
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">43.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_43} zł</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">44.</div>
-            <div className="kwota">%</div>
+            <div className="kwota">{visualizationPoints.P_44}%</div>
           </td>
           <td className="wypelniane" style={{ width: '12%' }}>
             <div className="opisrubryki">45.</div>
-            <div className="kwota">zł</div>
+            <div className="kwota">{visualizationPoints.P_45} zł</div>
           </td>
         </tr>
           
+
+
+        <table className="normalna">
+        <tbody><tr>
+          <td className="niewypelnianeopisy" style={{width:"74%"}}>Kwota należnego podatku
+					<small style={{fontWeight:"normal"}}><br />Suma kwot z kolumny d.
+						</small>
+          </td>
+          <td className="wypelniane" style={{width:"26%"}}>
+            <div className="opisrubryki">46.</div>
+            <div className="kwota">
+						{visualizationPoints.P_46} zł
+					</div>
+          </td>
+        </tr>
+      </tbody></table>
 
           {/* Continue with similar rows and logic */}
         </tbody>
@@ -435,7 +388,7 @@ export default function Visualization() {
         <tbody><tr>
           <td className=" wypelniane">
             <div className="opisrubryki">47. Typ spółki:</div>
-            <div className="opisrubryki"></div>
+            <div className="opisrubryki">{visualizationPoints.P_47}</div>
           </td>
         </tr>
       </tbody></table>
@@ -444,7 +397,7 @@ export default function Visualization() {
         <tbody><tr>
           <td className=" wypelniane">
             <div className="opisrubryki">48. Podstawa opodatkowania dotyczy:</div>
-            <div className="opisrubryki"></div>
+            <div className="opisrubryki">{visualizationPoints.P_48}</div>
           </td>
         </tr>
       </tbody></table>
@@ -458,7 +411,7 @@ export default function Visualization() {
           <td className="wypelniane" style={{width:"20%"}}>
             <div className="opisrubryki">49.</div>
             <div className="kwota">
-						zł
+						{visualizationPoints.P_49} zł
 					</div>
           </td>
         </tr>
@@ -470,7 +423,7 @@ export default function Visualization() {
           <td className="wypelniane" style={{width:"20%"}}>
             <div className="opisrubryki">50.</div>
             <div className="kwota">
-						zł‚   gr
+						{visualizationPoints.P_50} zł‚   gr
 					</div>
           </td>
         </tr>
@@ -489,7 +442,7 @@ export default function Visualization() {
           <td className="wypelniane" style={{ width: '20%' }}>
             <div className="opisrubryki">51.</div>
             <div className="kwota">
-              zł&nbsp; gr
+              {visualizationPoints.P_51} zł&nbsp; gr
             </div>
           </td>
         </tr>
@@ -504,7 +457,7 @@ export default function Visualization() {
           <td className="wypelniane" style={{ width: '20%' }}>
             <div className="opisrubryki">52.</div>
             <div className="kwota">
-              zł
+              {visualizationPoints.P_52} zł
             </div>
           </td>
         </tr>
@@ -523,7 +476,7 @@ export default function Visualization() {
             </td>
             <td className="wypelniane pogrubiane" style={{ width: '20%' }}>
               <div className="opisrubryki">53.</div>
-              <div className="kwota">0 zł</div>
+              <div className="kwota">{visualizationPoints.P_53} zł</div>
             </td>
           </tr>
         </tbody>
@@ -544,10 +497,10 @@ export default function Visualization() {
   <tbody>
     <tr>
       <td className="wypelniane" style={{ width: '60%' }}>
-        <div className="opisrubryki">54. Województwo</div>
+        <div className="opisrubryki">54. Województwo {visualizationPoints.P_54}</div>
       </td>
       <td className="wypelniane" style={{ width: '40%' }}>
-        <div className="opisrubryki">55. Powiat</div>
+        <div className="opisrubryki">55. Powiat {visualizationPoints.P_55}</div>
       </td>
     </tr>
   </tbody>
@@ -556,16 +509,16 @@ export default function Visualization() {
   <tbody>
     <tr>
       <td className="wypelniane" style={{ width: '20%' }}>
-        <div className="opisrubryki">56. Gmina</div>
+        <div className="opisrubryki">56. Gmina {visualizationPoints.P_56}</div>
       </td>
       <td className="wypelniane" style={{ width: '50%' }}>
-        <div className="opisrubryki">57. Ulica</div>
+        <div className="opisrubryki">57. Ulica {visualizationPoints.P_57}</div>
       </td>
       <td className="wypelniane" style={{ width: '15%' }}>
-        <div className="opisrubryki">58. Nr domu</div>
+        <div className="opisrubryki">58. Nr domu {visualizationPoints.P_58}</div>
       </td>
       <td className="wypelniane" style={{ width: '15%' }}>
-        <div className="opisrubryki">59. Nr lokalu</div>
+        <div className="opisrubryki">59. Nr lokalu {visualizationPoints.P_59}</div>
       </td>
     </tr>
   </tbody>
@@ -574,10 +527,10 @@ export default function Visualization() {
   <tbody>
     <tr>
       <td className="wypelniane" style={{ width: '70%' }}>
-        <div className="opisrubryki">60. Miejscowość</div>
+        <div className="opisrubryki">60. Miejscowość {visualizationPoints.P_60}</div>
       </td>
       <td className="wypelniane" style={{ width: '30%' }}>
-        <div className="opisrubryki">61. Kod pocztowy</div>
+        <div className="opisrubryki">61. Kod pocztowy {visualizationPoints.P_61}</div>
       </td>
     </tr>
   </tbody>
@@ -588,7 +541,7 @@ export default function Visualization() {
   <tbody>
     <tr>
       <td className="wypelniane" style={{ width: '30%' }}>
-        <div className="opisrubryki">62. Liczba dołączonych załączników PCC-3/A</div>
+        <div className="opisrubryki">62. Liczba dołączonych załączników PCC-3/A {visualizationPoints.P_61}</div>
         <div className="kwota"></div>
       </td>
     </tr>
