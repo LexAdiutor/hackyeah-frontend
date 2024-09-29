@@ -240,9 +240,277 @@ export default function Visualization() {
             </td>
           </tr>
 
+
+
+          <tr>
+          <td className="niewypelniane" style={{ width: '40%' }}>
+            Rodzaj czynności cywilnoprawnej
+            <small style={{ fontWeight: 'normal' }}>
+              <br />(w tym zmiana umowy, orzeczenie sądu lub ugoda)
+            </small>
+          </td>
+          <td className="niewypelniane" style={{ width: '25%' }}>
+            Podstawa opodatkowania
+            <small style={{ fontWeight: 'normal' }}>
+              <br />określona zgodnie z art. 6 ustawy
+              <br />(po zaokrągleniu do pełnych złotych)
+            </small>
+          </td>
+          <td className="niewypelniane" style={{ width: '10%' }}>
+            Stawka podatku
+            <small style={{ fontWeight: 'normal' }}>
+              <br />określona zgodnie z art. 7 ustawy
+            </small>
+          </td>
+          <td className="niewypelniane" style={{ width: '25%' }}>
+            Obliczony należny podatek od czynności cywilnoprawnej
+            <small style={{ fontWeight: 'normal' }}>
+              <br />(po zaokrągleniu do pełnych złotych)
+            </small>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>a</td>
+          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>b</td>
+          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>c</td>
+          <td className="niewypelniane" style={{ fontWeight: 'normal' }}>d</td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '35%' }} rowSpan={2}>
+            Umowa sprzedaży<sup>3)</sup>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">24.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="niewypelnianeopisy" style={{ width: '12%' }}>
+            <h1>
+              <div>1%</div>
+            </h1>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">25.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">26.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="niewypelnianeopisy" style={{ width: '12%' }}>
+            <h1>
+              <div>2%</div>
+            </h1>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">27.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '35%' }}>Umowa zamiany</td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">28.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">29.</div>
+            <div className="kwota">%</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">30.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        {/* Add the remaining rows in a similar manner */}
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '35%' }}>
+            Umowa pożyczki lub depozytu nieprawidłowego, w tym zwolniona na podstawie art. 9 pkt 10 lit. b ustawy<sup>4)</sup>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">31.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">32.</div>
+            <div className="kwota">%</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">33.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '35%' }}>Umowa darowizny w części dotyczącej przejęcia przez obdarowanego długów i ciężarów lub zobowiązań darczyńcy</td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">34.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">35.</div>
+            <div className="kwota">%</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">36.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '35%' }}>Ustanowienie odpłatnego użytkowania, w tym nieprawidłowego</td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">37.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">38.</div>
+            <div className="kwota">%</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">39.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '35%' }} rowSpan={2}>Ustanowienie hipoteki<sup>5)</sup></td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">40.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="niewypelnianeopisy" style={{ width: '12%' }}>
+            <h1>
+              <div>0,1%</div>
+            </h1>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">41.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '12%' }}>
+            <h1>
+              <div>1</div>
+            </h1>
+          </td>
+          <td className="niewypelnianeopisyright" style={{ width: '12%' }}>19 zł</td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">42.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+        <tr>
+          <td className="wypelniane" style={{ width: '35%' }}>
+
+          <div className="opisrubryki">
+              Inna <small style={{ fontWeight: 'normal' }}>(wymienić jaka):</small>
+            </div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">43.</div>
+            <div className="kwota">zł</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">44.</div>
+            <div className="kwota">%</div>
+          </td>
+          <td className="wypelniane" style={{ width: '12%' }}>
+            <div className="opisrubryki">45.</div>
+            <div className="kwota">zł</div>
+          </td>
+        </tr>
+          
+
           {/* Continue with similar rows and logic */}
         </tbody>
       </table>
+
+
+
+      {/* section E */}
+
+      <h2 className="tytul-sekcja-blok">E.&nbsp;OBLICZENIE NALEŻNEGO PODATKU OD UMOWY SPÓŁKI / ZMIANY UMOWY SPÓŁKI</h2>
+      <h3 className="tytul-sekcja-blok">E.1. OKREŚLENIE PODSTAWY OPODATKOWANIA</h3>
+      <table className="normalna">
+        <tbody><tr>
+          <td className=" wypelniane">
+            <div className="opisrubryki">47. Typ spółki:</div>
+            <div className="opisrubryki"></div>
+          </td>
+        </tr>
+      </tbody></table>
+
+      <table className="normalna">
+        <tbody><tr>
+          <td className=" wypelniane">
+            <div className="opisrubryki">48. Podstawa opodatkowania dotyczy:</div>
+            <div className="opisrubryki"></div>
+          </td>
+        </tr>
+      </tbody></table>
+      <table className="normalna">
+        <tbody><tr>
+          <td className="niewypelnianeopisy" style={{width:"80%"}}>Podstawa opodatkowania - określona zgodnie z art. 6 ust. 1 pkt 8 ustawy
+					<small style={{fontWeight:"normal"}}>
+							(po zaokrągleniu do pełnych złotych)
+					</small>
+          </td>
+          <td className="wypelniane" style={{width:"20%"}}>
+            <div className="opisrubryki">49.</div>
+            <div className="kwota">
+						zł
+					</div>
+          </td>
+        </tr>
+      </tbody></table>
+      <h3 className="tytul-sekcja-blok">E.2. ODLICZENIA OD PODSTAWY OPODATKOWANIA - ART. 6 UST. 9 USTAWY</h3>
+      <table className="normalna">
+        <tbody><tr>
+          <td className="niewypelnianeopisy" style={{width:"80%"}}>Opłaty i koszty związane z zawarciem umowy spółki lub jej zmiany – na podstawie art. 6 ust. 9 ustawy</td>
+          <td className="wypelniane" style={{width:"20%"}}>
+            <div className="opisrubryki">50.</div>
+            <div className="kwota">
+						zł‚   gr
+					</div>
+          </td>
+        </tr>
+      </tbody></table>
+      <h3 className="tytul-sekcja-blok">E.3. OBLICZENIE NALEŻNEGO PODATKU</h3>
+      
+      <table className="normalna">
+      <tbody>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '80%' }}>
+            Podstawa obliczenia podatku
+            <small style={{ fontWeight: 'normal' }}>
+              <br />Od kwoty z poz. 49 należy odjąć kwotę z poz. 50. Jeżeli różnica jest liczbą ujemną, należy wpisać 0.
+            </small>
+          </td>
+          <td className="wypelniane" style={{ width: '20%' }}>
+            <div className="opisrubryki">51.</div>
+            <div className="kwota">
+              zł&nbsp; gr
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td className="niewypelnianeopisy" style={{ width: '80%' }}>
+            Kwota należnego podatku
+            <small style={{ fontWeight: 'normal' }}>
+              <br />(po zaokrągleniu do pełnych złotych)
+              <br />Podatek obliczony według stawki określonej w art. 7 ust. 1 pkt 9 ustawy od podstawy z poz. 51.
+            </small>
+          </td>
+          <td className="wypelniane" style={{ width: '20%' }}>
+            <div className="opisrubryki">52.</div>
+            <div className="kwota">
+              zł
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
 
       {/* Section F: Tax to Pay */}
       <h2 className="tytul-sekcja-blok">F. PODATEK DO ZAPŁATY</h2>

@@ -7,16 +7,21 @@ export default function RootLayout() {
 		console.log("request send");
 		try {
 			const data = await fetch(
-				import.meta.env.VITE_API_BACKEND_URL + "/test",
+				"https://standaryzacjadanych.hoga.pl/www/urzedy.asp",
 				{
-					method: "GET",
+					method: "POST",
+					body: new URLSearchParams("etap=1&miasto=Kulerz&kod=32-031&woj=ma%B3opolskie&ulica=&ndom=40&ok=Szukaj"),
 					headers: {
 						"Content-Type": "application/json",
+						"Access-Control-Allow-Origin": "*",
+						
 					},
 				}
 			);
 
-			console.log(await data.text());
+			console.log(data)
+
+			// console.log(await data.text());
 		} catch (error) {
 			console.log("Błąd po stronie serwera", error);
 		}
